@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="khaki_dark_bg">#2E3B2B</color> <!-- Dark khaki green -->
+    <color name="khaki_primary">#556B2F</color> <!-- OliveDrab -->
+    <color name="khaki_secondary">#6B8E23</color> <!-- OliveDrabLight -->
+    <color name="khaki_text_primary">#F5F5DC</color> <!-- Beige -->
+    <color name="khaki_text_secondary">#C0C0A0</color> <!-- Muted khaki -->
+    <color name="khaki_accent">#A9BA9D</color> <!-- Pale green -->
+    <color name="khaki_light">#A9B56D</color> <!-- Pale green -->
+    <color name="khaki_button">#4B5320</color> <!-- Army green -->
+    <color name="khaki_button_pressed">#3B4220</color>
+    <color name="khaki_input">#3B9460</color>
+</resources>

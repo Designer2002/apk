@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Расчёт по формуле</string>
+    <string name="desc_button_icon">Определить геолокацию</string>
+    <string name="x_coord">Координата X</string>
+    <string name="y_coord">Координата Y</string>
+    <string name="variable">Переменная</string>
+    <string name="calculate">Рассчитать</string>
+    <string name="tableX">X</string>
+    <string name="tableY">Y</string>
+    <string name="tableVar">Число</string>
+    <string name="table_priznak">Признак</string>
+    <string name="table3">3 контр.</string>
+    <string name="tablebdu10">БДУ х10</string>
+    <string name="tablebdu1">БДУ х1</string>
+    <string name="tabledu10">ДУ х10</string>
+    <string name="tabledu1">ДУ х1</string>
+</resources>
