@@ -1,3 +1,5 @@
+package com.example.myapplication;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -57,25 +59,25 @@ public class Formula {
         res[2][5] = (res[2][0] + res[2][1] + res[2][2] + res[2][3] + res[2][4]) % 10;
         //остаток от деления всех цифр 3й строчки на 10
     }
-    public static void main(String[] args) {
-        String x;
-        String y;
-        String c;
-        try (Scanner scanner = new Scanner(System.in) // Create a Scanner object
-        ) {
-            System.out.println("Введите СЕМИЗНАЧНУЮ координату x:");
-            x = scanner.nextLine(); // Read X
-            System.out.println("Введите СЕМИЗНАЧНУЮ координату y:");
-            y = scanner.nextLine(); // Read Y
-            System.out.println("Введите ЧЕТЫРЕХЗНАЧНУЮ переменную c:");
-            c = scanner.nextLine(); // Read C
-        }
-        //проверка не введена ли чепуха
-        if (!checkIfDataIsCorrect(x, y, c)){
-            System.err.println("ВВОД НЕКОРРЕКТНЫЙ! ПОСЧИТАТЬ НЕ ПОЛУЧИТСЯ :(");
-            return;
-        }
-        Integer[][] result = calculate(x, y, c);
-        System.out.println(Arrays.deepToString(result));
-    }
+//    public static void main(String[] args) {
+//        String x;
+//        String y;
+//        String c;
+//        try (Scanner scanner = new Scanner(System.in) // Create a Scanner object
+//        ) {
+//            System.out.println("Введите СЕМИЗНАЧНУЮ координату x:");
+//            x = scanner.nextLine(); // Read X
+//            System.out.println("Введите СЕМИЗНАЧНУЮ координату y:");
+//            y = scanner.nextLine(); // Read Y
+//            System.out.println("Введите ЧЕТЫРЕХЗНАЧНУЮ переменную c:");
+//            c = scanner.nextLine(); // Read C
+//        }
+//        //проверка не введена ли чепуха
+//        if (!checkIfDataIsCorrect(x, y, c)){
+//            System.err.println("ВВОД НЕКОРРЕКТНЫЙ! ПОСЧИТАТЬ НЕ ПОЛУЧИТСЯ :(");
+//            return;
+//        }
+//        Integer[][] result = calculate(x, y, c);
+//        System.out.println(Arrays.deepToString(result));
+//    }
 }

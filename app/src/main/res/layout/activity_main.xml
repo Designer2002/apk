@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/khaki_dark_bg">
-
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-180dp"
+        android:layout_marginEnd="-130dp"
+        android:layout_marginTop="350dp"
+        android:background="@drawable/khaki_error_box"
+        android:textColor="@color/khaki_text_primary"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:rotation="-90"
+        android:gravity="center" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -59,27 +72,29 @@
                 android:textColorHint="@color/khaki_text_secondary"
                 android:padding="1dp"
                 android:layout_marginEnd="1dp"
+                android:layout_marginBottom="170dp"
                 android:layoutDirection="ltr"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:rotation="-90"
                 android:gravity="fill_vertical"/>
+
             <EditText
                 android:id="@+id/edit_var"
+                android:layout_width="wrap_content"
+                android:layout_height="590dp"
+                android:layout_marginBottom="150dp"
                 android:layout_weight="1"
                 android:autofillHints="1234"
+                android:background="@color/khaki_input"
+                android:gravity="fill_vertical"
                 android:hint="@string/variable"
                 android:inputType="numberDecimal"
-                android:backgroundTint="@color/khaki_secondary"
-                android:textColor="@color/khaki_text_primary"
-                android:textColorHint="@color/khaki_text_secondary"
-                android:padding="1dp"
-                android:layout_marginEnd="1dp"
                 android:layoutDirection="ltr"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:padding="10dp"
                 android:rotation="-90"
-                android:gravity="fill_vertical"/>
+                android:textColor="@color/khaki_text_primary"
+                android:textColorHint="@color/khaki_text_secondary" />
         </LinearLayout>
 
         <Button
@@ -209,4 +224,4 @@
         </TableLayout>
 
     </LinearLayout>
-</HorizontalScrollView>
+</FrameLayout>
