@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Расчёт по формуле</string>
     <string name="desc_button_icon">Определить геолокацию</string>
+    <string name="desc_button_hand_icon">Ввести координаты вручную</string>
     <string name="x_coord">Координата X</string>
     <string name="y_coord">Координата Y</string>
     <string name="variable">Переменная</string>
@@ -14,4 +15,7 @@
     <string name="tablebdu1">БДУ х1</string>
     <string name="tabledu10">ДУ х10</string>
     <string name="tabledu1">ДУ х1</string>
+    <string name="gps_process">Идёт пересчёт координат в систему СК-42...</string>
+    <string name="gps_title">По GPS</string>
+    <string name="hand_title">Вручную</string>
 </resources>

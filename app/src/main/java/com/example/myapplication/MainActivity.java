@@ -1,5 +1,7 @@
 package com.example.myapplication;
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -7,16 +9,22 @@ import android.location.LocationListener;
 import android.provider.Settings;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -25,15 +33,18 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION = 1;
-    private LocationManager locationManager;
     private static double lat;
     private static double lon;
     private static double att;
-    private static String yString;
-    private static  String xString;
-    private static String FormatCoord(String coordinate){
+    private static String yStringFormatted;
+    private static  String xStringFormatted;
+    private TextView viewX;
+    private  TextView viewY;
+    private TextView errorView;
+    private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
-        int result = (int) Math.round(number * 1_000_000);
+        int multiplier = coordinate.indexOf('.') <= 2 ? 100000 : 10000;
+        int result = (int) Math.round(number * multiplier);
         return String.valueOf(result);
     }
     private void DisplayError(String text, TextView errorView){
@@ -59,11 +70,12 @@ public class MainActivity extends AppCompatActivity {
                 REQUEST_LOCATION);
 
         ImageButton button = findViewById(R.id.gps_button);
-        TextView errorView = findViewById(R.id.error_message);
+        errorView = findViewById(R.id.error_message);
         EditText edit = findViewById(R.id.edit_var);
-        TextView viewX = findViewById(R.id.x);
-        TextView viewY = findViewById(R.id.y);
+        viewX = findViewById(R.id.x);
+        viewY = findViewById(R.id.y);
         TableLayout table = findViewById(R.id.khaki_table);
+        LinearLayout spinner = findViewById(R.id.spinner_layout);
         //поля таблицы
         TextView f00 = table.findViewById(R.id.f00);
         TextView f01 = table.findViewById(R.id.f01);
@@ -84,49 +96,53 @@ public class MainActivity extends AppCompatActivity {
         TextView f24 = table.findViewById(R.id.f24);
         TextView f25 = table.findViewById(R.id.f25);
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        ImageButton hand_input = findViewById(R.id.hand_button);
+        hand_input.setOnClickListener(v -> {
+            showCoordDialog();
+        });
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         errorView.setOnClickListener(view->{
             errorView.setVisibility(View.GONE);
         });
         button.setOnClickListener(v -> {
-            // включить жпс
+
+                    // не дали доступ если
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Toast.makeText(this, "Функционал приложения требует GPS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 return;
             }
+            spinner.setVisibility(View.VISIBLE);
+                    fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                            .addOnSuccessListener(location -> {
+                                if (location != null) {
+                                    lat = location.getLatitude();
+                                    lon = location.getLongitude();
+                                    att = location.getAltitude();
+                                }
 
-            // не дали доступ если
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                                // движуха
+                                //1.у нас есть широта долгота высота но они в системе координат WSG-84
+                                //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
+                                double x = TranslatorWSG84_SK42.WGS84_SK42_Lat(lat, lon, att);
 
-            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    lat = location.getLatitude();
-                    lon = location.getLongitude();
-                    att = location.getAltitude();
-                    // движуха
-                    //1.у нас есть широта долгота высота но они в системе координат WSG-84
-                    //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
-                    double x = TranslatorWSG84_SK42.WGS84_SK42_Lat(lat, lon, att);
-                    double y = TranslatorWSG84_SK42.WGS84_SK42_Long(lat, lon, att);
-                    xString = String.valueOf(x);
-                    yString = String.valueOf(y);
-                    viewX.setText(xString);
-                    viewY.setText(yString);
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
-                @Override
-                public void onProviderEnabled(@NonNull String provider) {}
-                @Override
-                public void onProviderDisabled(@NonNull String provider) {}
-            }, null);
-        });
+                                double y = TranslatorWSG84_SK42.WGS84_SK42_Long(lat, lon, att);
+                                String xString = String.valueOf(x);
+                                String yString = String.valueOf(y);
+                                xStringFormatted = FormatCoord(xString);
+                                yStringFormatted = FormatCoord(yString);
+                                viewX.setText(xStringFormatted);
+                                viewY.setText(yStringFormatted);
+                                spinner.setVisibility(View.GONE);
+                            });
+                });
         Button calcButton = findViewById(R.id.calx_btn);
         calcButton.setOnClickListener(v -> {
             try{
@@ -136,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
                 }
-                if (yString==null||xString==null)
+                if (xStringFormatted==null||yStringFormatted==null)
                 {
                     DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу",errorView);
                     return;
@@ -150,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     DisplayError("Неверный формат третьей переменной",errorView);
                     return;
                 }
-                String xStringFormatted = FormatCoord(xString);
-                String yStringFormatted = FormatCoord(yString);
+
                 //сделаем таблицу а потом фигачим в ту что на телефоне
                 Integer[][] result = Formula.calculate(xStringFormatted, yStringFormatted, variable);
                 f00.setText(String.valueOf(result[0][0]));
@@ -179,4 +194,32 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+    private void showCoordDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.input_alert, null);
+
+        EditText editX = view.findViewById(R.id.editX);
+        EditText editY = view.findViewById(R.id.editY);
+        Button saveBtn = view.findViewById(R.id.saveBtn);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+
+        saveBtn.setOnClickListener(v -> {
+            String x = editX.getText().toString().trim();
+            String y = editY.getText().toString().trim();
+            if (x.length()!= 7 || y.length() != 7){
+                DisplayError("Неверный формат введеных координат", errorView);
+            }
+            xStringFormatted = x;
+            yStringFormatted = y;
+            viewX.setText(xStringFormatted);
+            viewY.setText(yStringFormatted);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
 }
