@@ -32,7 +32,7 @@ public class Formula {
         res[row][2] = num2;
         res[row][3] = num3;
         res[row][4] = num4;
-        res[row][5] = (num1+num2+num3+num4)%10;
+        res[row][5] = (res[row][0]+num1+num2+num3+num4)%10;
     }
     public static Integer[][] calculate(String x, String y, String c){
         Integer[][] res = new Integer[3][6];

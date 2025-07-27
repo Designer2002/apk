@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/khaki_dark_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Spinner overlay -->
+        <LinearLayout
+            android:id="@+id/spinner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="160dp"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gps_process"
+                android:textColor="@color/khaki_accent"
+                android:layout_gravity="center" />
+
+            <ProgressBar
+                android:id="@+id/gps_spinner"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="16dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/khaki_secondary" />
+        </LinearLayout>
+
+        <!-- Error message -->
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/khaki_error_box"
+            android:textColor="@color/khaki_text_primary"
+            android:textSize="14sp"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:gravity="center" />
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/load_checkbox"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/khaki_accent"
+                android:text="@string/checkbox_text"/>
+
+        </LinearLayout>
+        <!-- GPS + Hand Buttons -->
+        <LinearLayout
+            android:layout_marginTop="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:text="@string/gps_title"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"  android:layout_height="20dp" android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/gps_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:background="@drawable/gps_button"
+                    android:contentDescription="@string/desc_button_icon"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/gps" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:text="@string/hand_title"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"  android:layout_height="20dp" android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/hand_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:background="@drawable/gps_button"
+                    android:contentDescription="@string/desc_button_hand_icon"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/hand" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="0dp">
+
+                <TextView
+                    android:text="@string/recent_text"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="end"
+
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/recent_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:background="@drawable/gps_button"
+                    android:src="@drawable/recent"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/desc_button_icon" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:text="@string/clear_text"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/clear_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+
+                    android:background="@drawable/gps_button"
+                    android:src="@drawable/clear"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/clear_text" />
+            </LinearLayout>
+        </LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="-210dp"
+    android:textSize="18sp"
+    android:textColor="@color/khaki_text_primary"
+    android:layout_gravity="center"
+    android:text="@string/title_vvod"/>
+        <!-- Coordinate Fields -->
+        <LinearLayout
+            android:layout_marginTop="115dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/x"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/x_coord"
+                android:backgroundTint="@color/khaki_secondary"
+                android:textColor="@color/khaki_text_primary"
+                android:textColorHint="@color/khaki_text_secondary"
+                android:padding="8dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/y"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/y_coord"
+                android:backgroundTint="@color/khaki_secondary"
+                android:textColor="@color/khaki_text_primary"
+                android:textColorHint="@color/khaki_text_secondary"
+                android:padding="8dp"
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/edit_var"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/variable"
+                android:inputType="numberSigned"
+                android:background="@drawable/input_button"
+                android:textColor="@color/khaki_text_primary"
+                android:textColorHint="@color/khaki_text_secondary"
+                android:padding="10dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Calculate Button -->
+        <Button
+            android:layout_marginTop="-100dp"
+            android:id="@+id/calx_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/khaki_secondary"
+            android:text="@string/calculate"
+            android:textColor="@color/khaki_text_primary"
+            android:padding="8dp" />
+
+        <!-- Table -->
+        <TableLayout
+            android:layout_marginVertical="230dp"
+            android:rotation="0"
+            android:id="@+id/khaki_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1,2,3,4,5,6"
+            android:background="@color/khaki_dark_bg"
+            android:padding="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Header Row -->
+            <TableRow
+                android:background="@color/khaki_primary">
+
+                <!-- Empty corner cell -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:padding="8dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <!-- Column labels -->
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/table_priznak"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tablebdu10"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tablebdu1"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tabledu10"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tabledu1"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/table3"
+                    android:textColor="@color/khaki_text_primary"
+                    android:padding="8dp"
+                    android:gravity="center" />
+            </TableRow>
+
+            <!-- Row 1 -->
+            <TableRow android:background="@color/khaki_button">
+
+                <TextView
+
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tableX"
+                    android:textColor="@color/khaki_text_secondary"
+                    android:padding="8dp" />
+
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f00" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f01" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f02" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f03" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f04" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f05" android:text="-" style="@style/TableCell" />
+            </TableRow>
+
+            <!-- Row 2 -->
+            <TableRow android:background="@color/khaki_secondary">
+
+                <TextView
+                    android:background="@drawable/table_cell_border"
+                    android:text="@string/tableY"
+                    android:textColor="@color/khaki_text_secondary"
+                    android:padding="8dp" />
+
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f10" android:text="-" style="@style/TableCell" />
+                <TextView  android:background="@drawable/table_cell_border" android:id="@+id/f11" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f12" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f13" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f14" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f15" android:text="-" style="@style/TableCell" />
+            </TableRow>
+
+            <!-- Row 3 -->
+            <TableRow android:background="@color/khaki_button_pressed">
+
+                <TextView
+                    android:text="@string/tableVar"
+                    android:textColor="@color/khaki_text_secondary"
+                    android:padding="8dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f20" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f21" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f22" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f23" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f24" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f25" android:text="-" style="@style/TableCell" />
+            </TableRow>
+        </TableLayout>
+
+
+    </FrameLayout>
+</ScrollView>

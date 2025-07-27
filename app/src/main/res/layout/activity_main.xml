@@ -70,8 +70,64 @@
                     android:scaleType="centerInside"
                     android:contentDescription="@string/desc_button_hand_icon" />
             </LinearLayout>
-        </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="8dp">
 
+                <TextView
+                    android:text="@string/recent_text"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/recent_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/gps_button"
+                    android:src="@drawable/recent"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/desc_button_icon" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:text="@string/clear_text"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/clear_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/gps_button"
+                    android:src="@drawable/clear"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/clear_text" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/khaki_text_primary"
+            android:layout_gravity="center"
+            android:text="@string/title_vvod"/>
         <!-- Coordinates Input -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,38 +136,34 @@
             android:gravity="center"
             android:layout_marginTop="24dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/x"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/x_coord"
+                    android:padding="5dp"
                     android:textColor="@color/khaki_text_primary" />
 
                 <TextView
                     android:id="@+id/y"
+                    android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/y_coord"
                     android:textColor="@color/khaki_text_primary"
-                    android:layout_marginTop="8dp" />
-            </LinearLayout>
+          />
+
 
             <EditText
                 android:id="@+id/edit_var"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:background="@color/khaki_input"
+                android:background="@drawable/input_button"
                 android:hint="@string/variable"
-                android:inputType="numberDecimal|numberSigned"
-                android:padding="12dp"
+                android:inputType="numberSigned"
+                android:padding="8dp"
                 android:textColor="@color/khaki_text_primary"
                 android:textColorHint="@color/khaki_text_secondary" />
 
@@ -144,43 +196,43 @@
                 android:paddingTop="40dp">
 
                 <TableRow android:background="@color/khaki_primary">
-                    <TextView android:text="" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/table_priznak" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/tablebdu10" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/tablebdu1" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/tabledu10" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/tabledu1" style="@style/TableCellBook"/>
-                    <TextView android:text="@string/table3" style="@style/TableCellBook"/>
+                    <TextView android:text=""  android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/table_priznak" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/tablebdu10" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/tablebdu1" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/tabledu10" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/tabledu1" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:text="@string/table3" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
                 <TableRow android:background="@color/khaki_button">
-                    <TextView android:text="X" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f00" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f01" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f02" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f03" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f04" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f05" android:text="-" style="@style/TableCellBook"/>
+                    <TextView android:text="X" style="@style/TableCellBook" android:background="@drawable/table_cell_border"/>
+                    <TextView android:id="@+id/f00" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f01" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f02" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f03" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f04" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f05" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
                 <TableRow android:background="@color/khaki_secondary">
-                    <TextView android:text="Y" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f10" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f11" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f12" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f13" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f14" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f15" android:text="-" style="@style/TableCellBook"/>
+                    <TextView  android:background="@drawable/table_cell_border" android:text="Y" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f10" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f11" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f12" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f13" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f14" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f15" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
                 <TableRow android:background="@color/khaki_button_pressed">
-                    <TextView android:text="3" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f20" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f21" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f22" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f23" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f24" android:text="-" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f25" android:text="-" style="@style/TableCellBook"/>
+                    <TextView android:background="@drawable/table_cell_border" android:text="B" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f20" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f21" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f22" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f23" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f24" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f25" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>
@@ -223,5 +275,20 @@
             android:textSize="14sp"
             android:padding="12dp"
             android:gravity="center" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/load_checkbox"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/khaki_accent"
+                android:text="@string/checkbox_text"/>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

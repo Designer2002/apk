@@ -2,8 +2,8 @@
     <string name="app_name">Расчёт по формуле</string>
     <string name="desc_button_icon">Определить геолокацию</string>
     <string name="desc_button_hand_icon">Ввести координаты вручную</string>
-    <string name="x_coord">Координата X</string>
-    <string name="y_coord">Координата Y</string>
+    <string name="x_coord">Координата X\n(необходим ввод)</string>
+    <string name="y_coord">Координата Y\n(необходим ввод)</string>
     <string name="variable">Переменная</string>
     <string name="calculate">Рассчитать</string>
     <string name="tableX">X</string>
@@ -18,4 +18,8 @@
     <string name="gps_process">Идёт пересчёт координат в систему СК-42...</string>
     <string name="gps_title">По GPS</string>
     <string name="hand_title">Вручную</string>
+    <string name="title_vvod">Значения координат:</string>
+    <string name="recent_text">Последнее</string>
+    <string name="clear_text">Очистить</string>
+    <string name="checkbox_text">Подгружать значения из предыдущего расчёта при входе в приложение</string>
 </resources>

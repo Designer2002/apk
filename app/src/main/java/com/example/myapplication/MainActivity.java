@@ -1,8 +1,12 @@
 package com.example.myapplication;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static double att;
     private static String yStringFormatted;
     private static  String xStringFormatted;
+    private Button calcButton;
     private TextView viewX;
     private  TextView viewY;
     private TextView errorView;
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
         return;
     }
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (getSupportActionBar() != null) {
@@ -95,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
         TextView f23 = table.findViewById(R.id.f23);
         TextView f24 = table.findViewById(R.id.f24);
         TextView f25 = table.findViewById(R.id.f25);
+        //временно запомнить расчеты
+        ImageButton recent = findViewById(R.id.recent_button);
 
+
+        calcButton = findViewById(R.id.calx_btn);
         ImageButton hand_input = findViewById(R.id.hand_button);
         hand_input.setOnClickListener(v -> {
             showCoordDialog();
@@ -106,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
             errorView.setVisibility(View.GONE);
         });
         button.setOnClickListener(v -> {
-
+                    calcButton.setEnabled(false);
+                    calcButton.setBackgroundColor(R.color.grey);
                     // не дали доступ если
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
@@ -141,10 +152,13 @@ public class MainActivity extends AppCompatActivity {
                                 viewX.setText(xStringFormatted);
                                 viewY.setText(yStringFormatted);
                                 spinner.setVisibility(View.GONE);
+                                calcButton.setEnabled(true);
+                                calcButton.setBackgroundColor(R.color.khaki_secondary);
                             });
                 });
-        Button calcButton = findViewById(R.id.calx_btn);
+
         calcButton.setOnClickListener(v -> {
+
             try{
                 //2.заполняем таблицу
                 //но сначала надо убедиться что третья переменная тоже введена
@@ -152,9 +166,13 @@ public class MainActivity extends AppCompatActivity {
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
                 }
+                if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
+                    DisplayError("Что-то введено не так!",errorView);
+                    return;
+                }
                 if (xStringFormatted==null||yStringFormatted==null)
                 {
-                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу",errorView);
+                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную",errorView);
                     return;
                 }
                 String variable = String.valueOf(edit.getText());
@@ -162,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
                 }
-                if (variable.length()!=4){
+                if ((!variable.contains("-") && variable.length()!=4) || (variable.contains("-")&&variable.length()!=5)){
                     DisplayError("Неверный формат третьей переменной",errorView);
                     return;
                 }
@@ -193,6 +211,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        //подгружаю предыдущий расчет если он есть
+        SharedPreferences prefs = getSharedPreferences("calculation_tmp", MODE_PRIVATE);
+
+        String xString = prefs.getString("x_value", null);
+        String yString = prefs.getString("y_value", null);
+        String variable = prefs.getString("variable", null);
+        String resultArray = prefs.getString("array", null);
+        if (xString!=null){
+            viewX.setText(xString);
+        }
+        if (yString!=null){
+            viewY.setText(yString);
+        }
+        if (variable!=null){
+            edit.setText(variable);
+        }
+        if (resultArray!=null){
+
+        }
     }
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -207,19 +244,32 @@ public class MainActivity extends AppCompatActivity {
                 .create();
 
         saveBtn.setOnClickListener(v -> {
-            String x = editX.getText().toString().trim();
-            String y = editY.getText().toString().trim();
-            if (x.length()!= 7 || y.length() != 7){
-                DisplayError("Неверный формат введеных координат", errorView);
+            try {
+
+                String x = editX.getText().toString().trim();
+                String y = editY.getText().toString().trim();
+                if (!CheckFormat(x) || !CheckFormat(y)) {
+                    DisplayError("Неверный формат введеных координат", errorView);
+                }
+                xStringFormatted = x;
+                yStringFormatted = y;
+                viewX.setText(xStringFormatted);
+                viewY.setText(yStringFormatted);
+                dialog.dismiss();
             }
-            xStringFormatted = x;
-            yStringFormatted = y;
-            viewX.setText(xStringFormatted);
-            viewY.setText(yStringFormatted);
-            dialog.dismiss();
+            catch (Exception e){
+                DisplayError("Данные введены неккоретно!", errorView);
+            }
         });
 
         dialog.show();
     }
-
+    private boolean CheckFormat(String coord){
+        if (coord.contains("-")){
+            return coord.length()==8;
+        }
+        else{
+            return coord.length()==7;
+        }
+    }
 }
