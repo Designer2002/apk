@@ -207,32 +207,32 @@
 
                 <TableRow android:background="@color/khaki_button">
                     <TextView android:text="X" style="@style/TableCellBook" android:background="@drawable/table_cell_border"/>
-                    <TextView android:id="@+id/f00" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f01" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f02" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f03" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f04" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f05" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f00" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f01" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f02" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f03" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f04" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f05" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
                 <TableRow android:background="@color/khaki_secondary">
                     <TextView  android:background="@drawable/table_cell_border" android:text="Y" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f10" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f11" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f12" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f13" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f14" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f15" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f10" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f11" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f12" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f13" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f14" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f15" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
                 <TableRow android:background="@color/khaki_button_pressed">
                     <TextView android:background="@drawable/table_cell_border" android:text="B" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f20" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f21" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f22" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f23" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f24" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
-                    <TextView android:id="@+id/f25" android:text="-" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f20" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f21" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f22" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f23" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f24" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
+                    <TextView android:id="@+id/f25" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
             </TableLayout>
         </HorizontalScrollView>
@@ -290,5 +290,10 @@
                 android:text="@string/checkbox_text"/>
 
         </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/test"-->
+<!--            android:textColor="@color/white"/>-->
     </LinearLayout>
 </ScrollView>

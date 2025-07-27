@@ -1,5 +1,6 @@
 package com.example.myapplication;
 import android.Manifest;
+import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -42,8 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private static double att;
     private static String yStringFormatted;
     private static  String xStringFormatted;
+    private  TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
     private Button calcButton;
+    private  EditText edit;
     private TextView viewX;
+    private TableLayout table;
     private  TextView viewY;
     private TextView errorView;
     private static String FormatCoord(String coordinate) {
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 errorView.setVisibility(View.GONE);
             }
-        }, 2000);
+        }, 4000);
         return;
     }
     @SuppressLint("ResourceAsColor")
@@ -77,40 +82,60 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton button = findViewById(R.id.gps_button);
         errorView = findViewById(R.id.error_message);
-        EditText edit = findViewById(R.id.edit_var);
+        edit = findViewById(R.id.edit_var);
         viewX = findViewById(R.id.x);
         viewY = findViewById(R.id.y);
-        TableLayout table = findViewById(R.id.khaki_table);
+        table = findViewById(R.id.khaki_table);
         LinearLayout spinner = findViewById(R.id.spinner_layout);
         //поля таблицы
-        TextView f00 = table.findViewById(R.id.f00);
-        TextView f01 = table.findViewById(R.id.f01);
-        TextView f02 = table.findViewById(R.id.f02);
-        TextView f03 = table.findViewById(R.id.f03);
-        TextView f04 = table.findViewById(R.id.f04);
-        TextView f05 = table.findViewById(R.id.f05);
-        TextView f10 = table.findViewById(R.id.f10);
-        TextView f11 = table.findViewById(R.id.f11);
-        TextView f12 = table.findViewById(R.id.f12);
-        TextView f13 = table.findViewById(R.id.f13);
-        TextView f14 = table.findViewById(R.id.f14);
-        TextView f15 = table.findViewById(R.id.f15);
-        TextView f20 = table.findViewById(R.id.f20);
-        TextView f21 = table.findViewById(R.id.f21);
-        TextView f22 = table.findViewById(R.id.f22);
-        TextView f23 = table.findViewById(R.id.f23);
-        TextView f24 = table.findViewById(R.id.f24);
-        TextView f25 = table.findViewById(R.id.f25);
+         f00 = table.findViewById(R.id.f00);
+         f01 = table.findViewById(R.id.f01);
+         f02 = table.findViewById(R.id.f02);
+         f03 = table.findViewById(R.id.f03);
+         f04 = table.findViewById(R.id.f04);
+         f05 = table.findViewById(R.id.f05);
+         f10 = table.findViewById(R.id.f10);
+         f11 = table.findViewById(R.id.f11);
+         f12 = table.findViewById(R.id.f12);
+         f13 = table.findViewById(R.id.f13);
+         f14 = table.findViewById(R.id.f14);
+         f15 = table.findViewById(R.id.f15);
+         f20 = table.findViewById(R.id.f20);
+         f21 = table.findViewById(R.id.f21);
+         f22 = table.findViewById(R.id.f22);
+         f23 = table.findViewById(R.id.f23);
+         f24 = table.findViewById(R.id.f24);
+         f25 = table.findViewById(R.id.f25);
+
         //временно запомнить расчеты
         ImageButton recent = findViewById(R.id.recent_button);
-
+         recent.setOnClickListener(v -> {
+             RememberOut(table);
+         });
 
         calcButton = findViewById(R.id.calx_btn);
         ImageButton hand_input = findViewById(R.id.hand_button);
         hand_input.setOnClickListener(v -> {
             showCoordDialog();
         });
+        //загрузить прошлое состояние и проверить включена ли запоминалка
+        SharedPreferences prefs = getSharedPreferences("checkbox_prefs", MODE_PRIVATE);
+        boolean isChecked = prefs.getBoolean("checkbox_state", false);
 
+        CheckBox box = findViewById(R.id.load_checkbox);
+        box.setChecked(isChecked);
+        if (box.isChecked()){
+            RememberOut(table);
+        }
+        box.setOnCheckedChangeListener((buttonView, isNowChecked) -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("checkbox_state", isNowChecked);
+            editor.apply();
+        });
+        ImageButton cleanBtn = findViewById(R.id.clear_button);
+        cleanBtn.setOnClickListener(v -> {
+            ClearData();
+        });
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         errorView.setOnClickListener(view->{
             errorView.setVisibility(View.GONE);
@@ -211,25 +236,96 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+    }
+
+    private void ClearData() {
+        // Очистка координат и переменной
+        edit.setText("");
+        viewX.setText(R.string.x_coord);
+        viewY.setText(R.string.y_coord);
+
+        // Очистка таблицы
+        f00.setText("");
+        f01.setText("");
+        f02.setText("");
+        f03.setText("");
+        f04.setText("");
+        f05.setText("");
+
+        f10.setText("");
+        f11.setText("");
+        f12.setText("");
+        f13.setText("");
+        f14.setText("");
+        f15.setText("");
+
+        f20.setText("");
+        f21.setText("");
+        f22.setText("");
+        f23.setText("");
+        f24.setText("");
+        f25.setText("");
+    }
+
+
+    private void RememberOut(TableLayout table){
         //подгружаю предыдущий расчет если он есть
-        SharedPreferences prefs = getSharedPreferences("calculation_tmp", MODE_PRIVATE);
 
-        String xString = prefs.getString("x_value", null);
-        String yString = prefs.getString("y_value", null);
-        String variable = prefs.getString("variable", null);
-        String resultArray = prefs.getString("array", null);
-        if (xString!=null){
-            viewX.setText(xString);
-        }
-        if (yString!=null){
-            viewY.setText(yString);
-        }
-        if (variable!=null){
-            edit.setText(variable);
-        }
-        if (resultArray!=null){
+        SharedPreferences prefs = getSharedPreferences("temp_data", MODE_PRIVATE);
+try {
 
-        }
+
+    String xString = prefs.getString("x_value", null);
+    String yString = prefs.getString("y_value", null);
+    String variable = prefs.getString("variable", null);
+    String resultArray = prefs.getString("result", null);
+
+    if (xString != null) {
+        viewX.setText(xString);
+    }
+    if (yString != null) {
+        viewY.setText(yString);
+    }
+    if (variable != null) {
+        edit.setText(variable);
+    }
+    if (resultArray != null) {
+        Gson gson = new Gson();
+        String[] result = gson.fromJson(resultArray, String[].class);
+
+        //поля таблицы
+
+        f00.setText(result[0]);
+        f01.setText(result[1]);
+        f02.setText(result[2]);
+        f03.setText(result[3]);
+        f04.setText(result[4]);
+        f05.setText(result[5]);
+        f10.setText(result[6]);
+        f11.setText(result[7]);
+        f12.setText(result[8]);
+        f13.setText(result[9]);
+        f14.setText(result[10]);
+        f15.setText(result[11]);
+        f20.setText(result[12]);
+        f21.setText(result[13]);
+        f22.setText(result[14]);
+        f23.setText(result[15]);
+        f24.setText(result[16]);
+        f25.setText(result[17]);
+        xStringFormatted=xString;
+        yStringFormatted =yString;
+
+
+
+    }
+}catch (Exception e){
+    DisplayError("Не удалось подгрузить данные с последнего расчёта", errorView);
+    //DisplayError(e.toString(), errorView);
+
+}
     }
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -271,5 +367,53 @@ public class MainActivity extends AppCompatActivity {
         else{
             return coord.length()==7;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        RememberIn(table);
+        super.onDestroy();
+    }
+
+    private void RememberIn(TableLayout table){
+        Gson gson = new Gson();
+        String[] res = new String[18];
+        res[0] = ((TextView) table.findViewById(R.id.f00)).getText().toString();
+        res[1] = ((TextView) table.findViewById(R.id.f01)).getText().toString();
+        res[2] = ((TextView) table.findViewById(R.id.f02)).getText().toString();
+        res[3] = ((TextView) table.findViewById(R.id.f03)).getText().toString();
+        res[4] = ((TextView) table.findViewById(R.id.f04)).getText().toString();
+        res[5] = ((TextView) table.findViewById(R.id.f05)).getText().toString();
+        res[6] = ((TextView) table.findViewById(R.id.f10)).getText().toString();
+        res[7] = ((TextView) table.findViewById(R.id.f11)).getText().toString();
+        res[8] = ((TextView) table.findViewById(R.id.f12)).getText().toString();
+        res[9] = ((TextView) table.findViewById(R.id.f13)).getText().toString();
+        res[10] = ((TextView) table.findViewById(R.id.f14)).getText().toString();
+        res[11] = ((TextView) table.findViewById(R.id.f15)).getText().toString();
+        res[12] = ((TextView) table.findViewById(R.id.f20)).getText().toString();
+        res[13] = ((TextView) table.findViewById(R.id.f21)).getText().toString();
+        res[14] = ((TextView) table.findViewById(R.id.f22)).getText().toString();
+        res[15] = ((TextView) table.findViewById(R.id.f23)).getText().toString();
+        res[16] = ((TextView) table.findViewById(R.id.f24)).getText().toString();
+        res[17] = ((TextView) table.findViewById(R.id.f25)).getText().toString();
+
+
+
+        String json = gson.toJson(res);
+        //TextView test = findViewById(R.id.test);
+        //test.setText(json);
+        SharedPreferences prefs = getSharedPreferences("temp_data", MODE_PRIVATE);
+
+        try{
+            prefs.edit().putString("result", json).apply();
+
+            if(viewX.getText()!=null)prefs.edit().putString("x_value", viewX.getText().toString()).apply();
+            if(viewY.getText()!=null)prefs.edit().putString("y_value", viewY.getText().toString()).apply();
+            if(edit.getText()!=null)prefs.edit().putString("variable", edit.getText().toString()).apply();
+        }
+        catch (Exception e){
+            DisplayError("Записать прошлый расчёт не удалось", errorView);
+        }
+
     }
 }

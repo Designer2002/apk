@@ -314,12 +314,12 @@
                     android:textColor="@color/khaki_text_secondary"
                     android:padding="8dp" />
 
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f00" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f01" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f02" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f03" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f04" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f05" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f00" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f01" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f02" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f03" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f04" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f05" android:text="" style="@style/TableCell" />
             </TableRow>
 
             <!-- Row 2 -->
@@ -331,12 +331,12 @@
                     android:textColor="@color/khaki_text_secondary"
                     android:padding="8dp" />
 
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f10" android:text="-" style="@style/TableCell" />
-                <TextView  android:background="@drawable/table_cell_border" android:id="@+id/f11" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f12" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f13" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f14" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f15" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f10" android:text="" style="@style/TableCell" />
+                <TextView  android:background="@drawable/table_cell_border" android:id="@+id/f11" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f12" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f13" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f14" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f15" android:text="" style="@style/TableCell" />
             </TableRow>
 
             <!-- Row 3 -->
@@ -348,12 +348,12 @@
                     android:padding="8dp"
                     android:background="@drawable/table_cell_border"/>
 
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f20" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f21" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f22" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f23" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f24" android:text="-" style="@style/TableCell" />
-                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f25" android:text="-" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f20" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f21" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f22" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f23" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f24" android:text="" style="@style/TableCell" />
+                <TextView android:background="@drawable/table_cell_border" android:id="@+id/f25" android:text="" style="@style/TableCell" />
             </TableRow>
         </TableLayout>
 
