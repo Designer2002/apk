@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
                     // не дали доступ если
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
+                        calcButton.setEnabled(true);
+                        calcButton.setBackgroundColor(R.color.khaki_secondary);
+
                         return;
                     }
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -153,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                calcButton.setEnabled(true);
+                calcButton.setBackgroundColor(R.color.khaki_secondary);
+
                 return;
             }
             spinner.setVisibility(View.VISIBLE);
@@ -191,15 +197,16 @@ public class MainActivity extends AppCompatActivity {
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
                 }
-                if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
-                    DisplayError("Что-то введено не так!",errorView);
-                    return;
-                }
                 if (xStringFormatted==null||yStringFormatted==null)
                 {
                     DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную",errorView);
                     return;
                 }
+                if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
+                    DisplayError("Что-то введено не так!",errorView);
+                    return;
+                }
+
                 String variable = String.valueOf(edit.getText());
                 if (variable.isEmpty()){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);

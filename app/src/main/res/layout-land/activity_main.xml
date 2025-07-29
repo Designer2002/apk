@@ -228,7 +228,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/khaki_secondary"
+            android:background="@color/khaki_secondary"
             android:text="@string/calculate"
             android:textColor="@color/khaki_text_primary"
             android:padding="8dp" />
