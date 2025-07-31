@@ -19,7 +19,11 @@
     <string name="gps_title">По GPS</string>
     <string name="hand_title">Вручную</string>
     <string name="title_vvod">Значения координат:</string>
-    <string name="recent_text">Последнее</string>
+    <string name="home_text">Главный экран</string>
     <string name="clear_text">Очистить</string>
     <string name="checkbox_text">Подгружать значения из предыдущего расчёта при входе в приложение</string>
+    <string name="r5">Расчёт по формуле 5</string>
+    <string name="r6">Расчёт по формуле 6</string>
+    <string name="r62">Расчёт по формуле 6 (две переменные)</string>
+    <string name="r7">Расчёт по формуле 7</string>
 </resources>

@@ -27,6 +27,23 @@
         <!-- TextInput styling -->
         <item name="textInputStyle">@style/KhakiTextInput</item>
     </style>
+    <!-- Original -->
+
+    <!-- Yellow -->
+    <style name="Theme.KhakiYellow" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#D8C88D</item>
+        <item name="colorSecondary">#C6B65C</item>
+        <item name="android:windowBackground">#F6F1D4</item>
+        <item name="android:textColorPrimary">#3A321A</item>
+    </style>
+
+    <!-- Blue/Turquoise -->
+    <style name="Theme.KhakiBlue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#A2D8C2</item>
+        <item name="colorSecondary">#80C8B4</item>
+        <item name="android:windowBackground">#CFF0E5</item>
+        <item name="android:textColorPrimary">#1B3C38</item>
+    </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 </resources>

@@ -42,7 +42,17 @@
         android:inputType="numberSigned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    <TextView
+        android:id="@+id/error_message2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:background="@drawable/khaki_error_box"
+        android:textColor="@color/khaki_text_primary"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:gravity="center" />
     <Button
         android:id="@+id/saveBtn"
         android:text="Сохранить"

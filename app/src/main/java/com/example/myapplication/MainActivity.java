@@ -3,6 +3,7 @@ import android.Manifest;
 import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import com.chaquo.python.Python;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView viewX;
     private TableLayout table;
     private  TextView viewY;
-    private TextView errorView;
+    private TextView errorView, errorView2;
     private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
         int multiplier = coordinate.indexOf('.') <= 2 ? 100000 : 10000;
@@ -64,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 errorView.setVisibility(View.GONE);
             }
-        }, 4000);
+        }, 6000);
         return;
     }
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton button = findViewById(R.id.gps_button);
         errorView = findViewById(R.id.error_message);
+
         edit = findViewById(R.id.edit_var);
         viewX = findViewById(R.id.x);
         viewY = findViewById(R.id.y);
@@ -107,10 +110,10 @@ public class MainActivity extends AppCompatActivity {
          f24 = table.findViewById(R.id.f24);
          f25 = table.findViewById(R.id.f25);
 
-        //временно запомнить расчеты
-        ImageButton recent = findViewById(R.id.recent_button);
-         recent.setOnClickListener(v -> {
-             RememberOut(table);
+        //на главный экран
+        ImageButton home = findViewById(R.id.home_button);
+         home.setOnClickListener(v -> {
+
          });
 
         calcButton = findViewById(R.id.calx_btn);
@@ -176,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                                 double x = TranslatorWSG84_SK42.WGS84_SK42_Lat(lat, lon, att);
 
                                 double y = TranslatorWSG84_SK42.WGS84_SK42_Long(lat, lon, att);
+                                DisplayError(lat + " " + x, errorView);
                                 String xString = String.valueOf(x);
                                 String yString = String.valueOf(y);
                                 xStringFormatted = FormatCoord(xString);
@@ -334,10 +338,23 @@ try {
 
 }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (! Python.isStarted()) {
+            Python.start(new AndroidPlatform(context));
+        }
+    }
+
+    private void ShowChooseDialog(){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.activity_start_window, null);
+    }
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.input_alert, null);
-
+        errorView2 = view.findViewById(R.id.error_message2);
         EditText editX = view.findViewById(R.id.editX);
         EditText editY = view.findViewById(R.id.editY);
         Button saveBtn = view.findViewById(R.id.saveBtn);
@@ -352,7 +369,10 @@ try {
                 String x = editX.getText().toString().trim();
                 String y = editY.getText().toString().trim();
                 if (!CheckFormat(x) || !CheckFormat(y)) {
-                    DisplayError("Неверный формат введеных координат", errorView);
+                    DisplayError("Неверный формат введеных координат", errorView2);
+                    viewX.setText(getString(R.string.x_coord));
+                    viewY.setText(getString(R.string.y_coord));
+                    return;
                 }
                 xStringFormatted = x;
                 yStringFormatted = y;

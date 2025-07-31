@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.chaquo.python")
 }
 
 android {
@@ -14,6 +15,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // On Apple silicon, you can omit x86_64.
+            abiFilters += listOf("arm64-v8a", "x86_64")
+        }
     }
 
     buildTypes {
@@ -30,13 +35,20 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
+chaquopy {
+    defaultConfig {
+        pip {
+            install("scipy")
+        }
+    }
+}
 dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    implementation("com.chaquo.python:chaquopy:16.1")
     implementation(libs.constraintlayout)
     implementation(libs.play.services.location)
     testImplementation(libs.junit)
