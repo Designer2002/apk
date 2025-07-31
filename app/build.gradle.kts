@@ -38,7 +38,7 @@ android {
 chaquopy {
     defaultConfig {
         pip {
-            install("scipy")
+            install("pyproj")
         }
     }
 }
@@ -48,7 +48,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
-    implementation("com.chaquo.python:chaquopy:16.1")
     implementation(libs.constraintlayout)
     implementation(libs.play.services.location)
     testImplementation(libs.junit)

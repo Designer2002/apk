@@ -12,7 +12,7 @@
         android:id="@+id/theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose the number"
+        android:text="@string/title_rap"
         android:textColor="@color/khaki_text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -20,8 +20,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
         android:orientation="horizontal"
         android:clipToPadding="false"
         android:paddingStart="16dp"
@@ -31,7 +31,7 @@
         android:id="@+id/continue_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"
+        android:text="OK"
         android:textColor="@color/khaki_text_primary"
         android:backgroundTint="@color/khaki_secondary"
         android:layout_marginTop="32dp"

@@ -1,5 +1,8 @@
 package com.example.myapplication;
 import android.Manifest;
+
+import com.chaquo.python.PyObject;
+import com.chaquo.python.android.AndroidPlatform;
 import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -12,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
+import android.os.Handler;
 import android.provider.Settings;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,13 +32,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
     private static double lat;
     private static double lon;
     private static double att;
+    private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted;
     private static  String xStringFormatted;
     private  TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
     private Button calcButton;
     private  EditText edit;
+    private int selected = -1;
     private TextView viewX;
     private TableLayout table;
     private  TextView viewY;
@@ -81,7 +91,10 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_LOCATION);
-
+        if (!Python.isStarted()) {
+            Python.start(new AndroidPlatform(this)); // this — это Activity context
+        }
+        ShowChooseDialog();
         ImageButton button = findViewById(R.id.gps_button);
         errorView = findViewById(R.id.error_message);
 
@@ -113,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         //на главный экран
         ImageButton home = findViewById(R.id.home_button);
          home.setOnClickListener(v -> {
-
+            ShowChooseDialog();
          });
 
         calcButton = findViewById(R.id.calx_btn);
@@ -176,10 +189,24 @@ public class MainActivity extends AppCompatActivity {
                                 // движуха
                                 //1.у нас есть широта долгота высота но они в системе координат WSG-84
                                 //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
-                                double x = TranslatorWSG84_SK42.WGS84_SK42_Lat(lat, lon, att);
+String[] result = new String[2];
+                                try {
+                                    Python py = Python.getInstance();
 
-                                double y = TranslatorWSG84_SK42.WGS84_SK42_Long(lat, lon, att);
-                                DisplayError(lat + " " + x, errorView);
+                                    //люто питоним!!
+                                    PyObject module = py.getModule("convert");  // имя файла без .py
+                                    PyObject pyresult = module.callAttr("convert", lat, lon);
+                                    String resStr = pyresult.toString();
+                                    result = resStr.replace("[", "").replace("]", "").split(",");
+                                } catch (Exception e) {
+                                    DisplayError(e.toString(), errorView);
+                                    return;
+                                }
+
+
+
+                                double x = Double.parseDouble(result[0]);
+                                double y = Double.parseDouble(result[1]);
                                 String xString = String.valueOf(x);
                                 String yString = String.valueOf(y);
                                 xStringFormatted = FormatCoord(xString);
@@ -339,18 +366,70 @@ try {
 }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (! Python.isStarted()) {
-            Python.start(new AndroidPlatform(context));
-        }
+
+    private void ShowChooseDialog() {
+        List<String> options = Arrays.asList(
+                getString(R.string.r7),
+                getString(R.string.r6),
+                getString(R.string.r62),
+                getString(R.string.r5)
+        );
+
+        // Повторим данные чтобы было как будто бесконечно
+        List<String> infiniteOptions = new ArrayList<>();
+        for (int i = 0; i < 100; i++) infiniteOptions.addAll(options);
+        // Старт с середины
+        int initialPos = infiniteOptions.size() / 2;
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.start_window, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+        Handler handler = new Handler();
+        RecyclerView recyclerView = view.findViewById(R.id.recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        Runnable scrollRunnable = new Runnable() {
+            int position = initialPos;
+
+            @Override
+            public void run() {
+                position++;
+                recyclerView.scrollBy(0, 2);  // скроллим на 1 пиксель вниз
+                handler.postDelayed(this, 8);
+            }
+        };
+        ThemeAdapter adapter = new ThemeAdapter(recyclerView, infiniteOptions, index -> {
+            selected = index % options.size(); // по mod вернуть настоящий индекс
+            handler.removeCallbacks(scrollRunnable);
+        });
+        recyclerView.setAdapter(adapter);
+
+
+        recyclerView.scrollToPosition(initialPos);
+
+
+
+        handler.postDelayed(scrollRunnable, 500); // подождать чуть перед стартом
+        // Кнопка "Continue"
+        Button continueBtn = view.findViewById(R.id.continue_button);
+        continueBtn.setOnClickListener(v -> {
+            if (selected!=-1){
+                dialog.dismiss();
+                TextView t = findViewById(R.id.title_text);
+                t.setText(getSelectedText(selected));
+            }
+        });
+        // Запретить закрытие при нажатии вне диалога
+        dialog.setCanceledOnTouchOutside(false);
+
+// Запретить закрытие при нажатии кнопки Назад
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
-    private void ShowChooseDialog(){
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.activity_start_window, null);
-    }
+
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.input_alert, null);
@@ -442,5 +521,21 @@ try {
             DisplayError("Записать прошлый расчёт не удалось", errorView);
         }
 
+    }
+
+    private String getSelectedText(int sel){
+        switch (sel){
+            case 0:
+                return getString(R.string.r7);
+            case 1:
+                return getString(R.string.r6);
+            case 2:
+                return getString(R.string.r62);
+            case 3:
+                return getString(R.string.r5);
+            default:
+                break;
+        }
+        return "";
     }
 }

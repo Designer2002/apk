@@ -17,14 +17,16 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
     private final List<String> items;
     private int selectedPosition = -1;
     private final OnThemeSelectedListener listener;
+    private  RecyclerView r;
 
     public interface OnThemeSelectedListener {
         void onThemeSelected(int themeIndex);
     }
 
-    public ThemeAdapter(List<String> items, OnThemeSelectedListener listener) {
+    public ThemeAdapter(RecyclerView r, List<String> items, OnThemeSelectedListener listener) {
         this.items = items;
         this.listener = listener;
+        this.r = r;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -39,10 +41,12 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
 
             view.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
+
                 if (pos != RecyclerView.NO_POSITION) {
                     selectedPosition = pos;
                     notifyDataSetChanged();
                     listener.onThemeSelected(pos);
+
                 }
             });
         }
