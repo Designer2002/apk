@@ -6,7 +6,15 @@
     android:background="@color/khaki_dark_grey"
     android:layout_width="300dp"
     android:layout_height="wrap_content">
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:text="Координаты конечной точки в системе СК-42:"
+    android:textColor="@color/white"
+    android:textSize="20sp"
+    />
     <TextView
         android:text="X"
         android:layout_gravity="center"
@@ -17,7 +25,7 @@
 
     <EditText
         android:id="@+id/editX"
-        android:hint="X (широта)"
+        android:hint="X (широта конечной точки)"
         android:backgroundTint="@color/khaki_secondary"
         android:textColor="@color/khaki_text_primary"
         android:textColorHint="@color/khaki_text_secondary"
@@ -35,7 +43,7 @@
 
     <EditText
         android:id="@+id/editY"
-        android:hint="Y (долгота)"
+        android:hint="Y (долгота конечной точки)"
         android:backgroundTint="@color/khaki_secondary"
         android:textColor="@color/khaki_text_primary"
         android:textColorHint="@color/khaki_text_secondary"

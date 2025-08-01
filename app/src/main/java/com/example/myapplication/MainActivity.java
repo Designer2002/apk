@@ -61,12 +61,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView viewX;
     private TableLayout table;
     private  TextView viewY;
+    private TextView rapperVal;
+    private Button rapper;
     private TextView errorView, errorView2;
     private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
         int multiplier = coordinate.indexOf('.') <= 2 ? 100000 : 10000;
         int result = (int) Math.round(number * multiplier);
-        return String.valueOf(result);
+        String resStr =String.valueOf(result);
+        return resStr.length() > 7 ? resStr.substring(0, 6) : resStr;
     }
     private void DisplayError(String text, TextView errorView){
         errorView.setText(text);
@@ -136,14 +139,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //rapper btn
-        Button rapper = findViewById(R.id.rapper_btn);
-        TextView rapperVal = findViewById(R.id.rapper_value);
-        if (selected == 2){
-            rapper.setVisibility(View.VISIBLE);
-            rapperVal.setVisibility(View.VISIBLE);
-        }
+         rapper = findViewById(R.id.rapper_btn);
+        rapperVal = findViewById(R.id.rapper_value);
+
         rapper.setOnClickListener(v -> {
-            showRapperDialog();
+            if (CheckFormat(viewX.getText().toString()) && CheckFormat(viewY.getText().toString()))
+                showRapperDialog();
+            else{
+                DisplayError("Для расчёта реперной точки нужна стартовая позиция. Она либо введена некорректно, либо не введена вовсе. Работать не будет", errorView);
+            }
         });
 
 
@@ -430,9 +434,14 @@ try {
         continueBtn.setOnClickListener(v -> {
             if (selected!=-1){
                 dialog.dismiss();
+                if (selected == 2){
+                    rapper.setVisibility(View.VISIBLE);
+                    rapperVal.setVisibility(View.VISIBLE);
+                }
                 TextView t = findViewById(R.id.title_text);
                 t.setText(getSelectedText(selected));
             }
+
         });
         // Запретить закрытие при нажатии вне диалога
         dialog.setCanceledOnTouchOutside(false);
@@ -460,16 +469,29 @@ try {
 
                 String x = editX.getText().toString().trim();
                 String y = editY.getText().toString().trim();
-                if (!CheckFormat(x) || !CheckFormat(y)) {
+                try{
+                    Double test = Double.parseDouble(x);
+                    test = Double.parseDouble(y);
+                }
+                catch (Exception e){
                     DisplayError("Неверный формат введеных координат", errorView2);
-                    viewX.setText(getString(R.string.x_coord));
-                    viewY.setText(getString(R.string.y_coord));
+                    rapperVal.setText(getString(R.string.undefined));
                     return;
                 }
-                xStringFormatted = x;
-                yStringFormatted = y;
-                viewX.setText(xStringFormatted);
-                viewY.setText(yStringFormatted);
+                String[] result;
+                try {
+                    Python py = Python.getInstance();
+
+                    //люто питоним снова!!
+                    PyObject module = py.getModule("geo");  // имя файла без .py
+                    PyObject pyresult = module.callAttr("inverse_geo", viewX.getText().toString(), viewY.getText().toString(), x, y);
+                    String resStr = pyresult.toString();
+                    result = resStr.replace("[", "").replace("]", "").split(",");
+                    rapperVal.setText("УГОЛ: " +result[1] + "\nРАССТОЯНИЕ: " + result[0]);
+                } catch (Exception e) {
+                    DisplayError(e.toString(), errorView);
+                    return;
+                }
                 dialog.dismiss();
             }
             catch (Exception e){
