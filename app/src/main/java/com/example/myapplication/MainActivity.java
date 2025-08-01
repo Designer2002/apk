@@ -69,7 +69,13 @@ public class MainActivity extends AppCompatActivity {
         int multiplier = coordinate.indexOf('.') <= 2 ? 100000 : 10000;
         int result = (int) Math.round(number * multiplier);
         String resStr =String.valueOf(result);
-        return resStr.length() > 7 ? resStr.substring(0, 6) : resStr;
+        if (resStr.length() > 7 && !resStr.contains("-")){
+            return resStr.substring(0,7);
+        }
+        else if(resStr.startsWith("-") && resStr.length()>8){
+            return resStr.substring(0,8);
+        }
+        else return resStr;
     }
     private void DisplayError(String text, TextView errorView){
         errorView.setText(text);
@@ -129,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         //на главный экран
         ImageButton home = findViewById(R.id.home_button);
          home.setOnClickListener(v -> {
+             ClearData();
             ShowChooseDialog();
          });
 
@@ -151,20 +158,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //загрузить прошлое состояние и проверить включена ли запоминалка
-        SharedPreferences prefs = getSharedPreferences("checkbox_prefs", MODE_PRIVATE);
-        boolean isChecked = prefs.getBoolean("checkbox_state", false);
-
-        CheckBox box = findViewById(R.id.load_checkbox);
-        box.setChecked(isChecked);
-        if (box.isChecked()){
-            RememberOut(table);
-        }
-        box.setOnCheckedChangeListener((buttonView, isNowChecked) -> {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("checkbox_state", isNowChecked);
-            editor.apply();
-        });
+//        //загрузить прошлое состояние и проверить включена ли запоминалка
+//        SharedPreferences prefs = getSharedPreferences("checkbox_prefs", MODE_PRIVATE);
+//        boolean isChecked = prefs.getBoolean("checkbox_state", false);
+//
+//        CheckBox box = findViewById(R.id.load_checkbox);
+//        box.setChecked(isChecked);
+//        if (box.isChecked()){
+//            RememberOut(table);
+//        }
+//        box.setOnCheckedChangeListener((buttonView, isNowChecked) -> {
+//            SharedPreferences.Editor editor = prefs.edit();
+//            editor.putBoolean("checkbox_state", isNowChecked);
+//            editor.apply();
+//        });
         ImageButton cleanBtn = findViewById(R.id.clear_button);
         cleanBtn.setOnClickListener(v -> {
             ClearData();
@@ -266,7 +273,7 @@ String[] result = new String[2];
                 }
 
                 //сделаем таблицу а потом фигачим в ту что на телефоне
-                Integer[][] result = Formula.calculate(xStringFormatted, yStringFormatted, variable);
+                Integer[][] result = Formula.calculate(xStringFormatted, yStringFormatted, variable, getNumber(selected));
                 f00.setText(String.valueOf(result[0][0]));
                 f01.setText(String.valueOf(result[0][1]));
                 f02.setText(String.valueOf(result[0][2]));
@@ -293,6 +300,22 @@ String[] result = new String[2];
         });
 
 
+    }
+
+    private int getNumber(int selected) {
+        switch (selected){
+            case 0:
+                return 7;
+            case 1:
+                return 6;
+            case 2:
+                return 6;
+            case 3:
+                return 5;
+            default:
+                break;
+        }
+        return -1;
     }
 
     private void ClearData() {

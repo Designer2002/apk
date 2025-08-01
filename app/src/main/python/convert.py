@@ -83,7 +83,7 @@ def convert(lat, lon):
         transformer = Transformer.from_crs(crs_wsg, crs)
         res = (transformer.transform(xx=lat, yy=lon))
     except:
-          return [0,0]
+          return [1111111,2222222]
     return [res[1], res[0]]
 
 

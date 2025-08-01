@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Formula {
-    private static final int SIX = 6;
     public static Boolean checkIfDataIsCorrect(String x, String y, String c){
         return x.length() == 7 && y.length() == 7 && c.length() == 4;
     }
@@ -15,6 +14,7 @@ public class Formula {
         return Integer.parseInt(y.substring(0, 2)) % 2 == 0;
     }
     private static String processNumber(String number){
+        number = number.replace("-", "");
         //отбросить первые 2 цифры числа  и работать с оставшимися 5
         String last_five_digits = number.substring(2);
         String last_two = last_five_digits.substring(3);
@@ -34,7 +34,7 @@ public class Formula {
         res[row][4] = num4;
         res[row][5] = (res[row][0]+num1+num2+num3+num4)%10;
     }
-    public static Integer[][] calculate(String x, String y, String c){
+    public static Integer[][] calculate(String x, String y, String c, int NUMBER){
         Integer[][] res = new Integer[3][6];
         //если Х положительный то первое число первой строки НОЛЬ если нет ЕДИНИЦА
         res[0][0] = isXPositive(x) ? 0 : 1;
@@ -47,11 +47,11 @@ public class Formula {
         String processedY = processNumber(y);
         //второй ряд таблицы
         makeRow(processedY, res, 1);
-        makeThirdRow(c, res);
+        makeThirdRow(c, res, NUMBER);
         return res;
     }
-    private static void makeThirdRow(String c, Integer[][] res) {
-        res[2][0] = SIX; //просто потому что
+    private static void makeThirdRow(String c, Integer[][] res, Integer NUMBER) {
+        res[2][0] = NUMBER; //просто потому что
         res[2][1] = Integer.parseInt(String.valueOf(c.charAt(0)));
         res[2][2] = Integer.parseInt(String.valueOf(c.charAt(1)));
         res[2][3] = Integer.parseInt(String.valueOf(c.charAt(2)));
