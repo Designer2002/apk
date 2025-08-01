@@ -259,7 +259,7 @@ String[] result = new String[2];
             try{
                 //2.заполняем таблицу
                 //но сначала надо убедиться что третья переменная тоже введена
-                if (edit.getText() == null){
+                if (edit.getText() == null && (variable == null || variable.isEmpty())){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
                 }
@@ -273,7 +273,7 @@ String[] result = new String[2];
                     return;
                 }
 
-                 variable = String.valueOf(edit.getText());
+                 if (variable.isEmpty() || variable == null) variable = String.valueOf(edit.getText());
                 if (variable.isEmpty()){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
@@ -471,23 +471,16 @@ try {
         continueBtn.setOnClickListener(v -> {
             if (selected!=-1){
                 dialog.dismiss();
-                if (selected == 2){
-                    rapper.setVisibility(View.VISIBLE);
-                    rapperVal.setVisibility(View.VISIBLE);
-                }
                 TextView t = findViewById(R.id.title_text);
                 t.setText(getSelectedText(selected));
                 if (selected == 2) {
-                    edit.getBackground().setColorFilter(Color.parseColor("#061614A6"), PorterDuff.Mode.SRC_ATOP);
-                    edit.setFocusable(false);
-                    edit.setEnabled(false);
-                    edit.setFocusableInTouchMode(false);
-                    edit.clearFocus();
+                    edit.setVisibility(View.GONE);
+                    rapperVal.setVisibility(View.VISIBLE);
+                    rapper.setVisibility(View.VISIBLE);
                 } else {
-                    edit.getBackground().clearColorFilter();
-                    edit.setFocusable(true);
-                    edit.setEnabled(true);
-                    edit.setFocusableInTouchMode(true);
+                    edit.setVisibility(View.VISIBLE);
+                    rapperVal.setVisibility(View.GONE);
+                    rapper.setVisibility(View.GONE);
                 }
                 //switchTheme(selected);
             }
@@ -539,7 +532,7 @@ try {
                     result = resStr.replace("[", "").replace("]", "").split(",");
                     DisplayAlert("Обратная геодезическая задача посчитана!\nУГОЛ: " +result[1] + "\nРАССТОЯНИЕ: " + result[0], 10);
                     variable = fillVrlms(result[1]);
-                    edit.setText(variable);
+                    rapperVal.setText(variable);
                 } catch (Exception e) {
                     DisplayError(e.toString(), errorView);
                     return;
@@ -555,7 +548,7 @@ try {
     }
 
     private String fillVrlms(String s) {
-        String[] sa = s.split(".");
+        String[] sa = s.split("\\.");
         s = sa[0];
         s += "0";
         StringBuilder sBuilder = new StringBuilder(s);

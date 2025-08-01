@@ -26,7 +26,7 @@
     <string name="r6">Репер 6</string>
     <string name="r62">Репер 6 с реперной точкой</string>
     <string name="r7">Репер 7</string>
-    <string name="undefined">Неопределённое значение (необходим расчёт)</string>
+    <string name="undefined">Beta мрлс\nНеопределённое значение (необходим расчёт)</string>
     <string name="dot">Реперная точка (нажмите чтобы рассчитать)</string>
     <string name="title_rap">Что необходимо рассчитать?</string>
 </resources>

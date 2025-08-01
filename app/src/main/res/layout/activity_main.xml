@@ -168,10 +168,10 @@
             <EditText
                 android:visibility="visible"
                 android:id="@+id/edit_var"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_weight="0"
-                android:background="@color/khaki_input"
+                android:background="@drawable/input_button"
                 android:hint="@string/variable"
                 android:inputType="numberSigned"
                 android:padding="8dp"
@@ -179,22 +179,9 @@
                 android:textColorHint="@color/khaki_text_secondary" />
 
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/rapper_btn"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="@string/dot"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/khaki_dark_bg"
-                android:backgroundTint="@color/khaki_accent"
-                android:padding="12dp"
-                android:visibility="gone"
-                android:layout_gravity="center"
-                android:layout_marginStart="12dp" />
+
+
+
             <TextView
                 android:id="@+id/rapper_value"
                 android:layout_width="150dp"
@@ -207,7 +194,19 @@
                 android:textColor="@color/khaki_accent">
             </TextView>
         </LinearLayout>
-
+        <Button
+            android:id="@+id/rapper_btn"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dot"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/khaki_dark_bg"
+            android:backgroundTint="@color/khaki_accent"
+            android:padding="12dp"
+            android:textSize="10sp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginStart="12dp" />
         <Button
             android:id="@+id/calx_btn"
             android:layout_width="wrap_content"
