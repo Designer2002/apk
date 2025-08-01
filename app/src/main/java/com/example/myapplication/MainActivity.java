@@ -259,6 +259,7 @@ String[] result = new String[2];
             try{
                 //2.заполняем таблицу
                 //но сначала надо убедиться что третья переменная тоже введена
+                if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
                 if (edit.getText() == null && (variable == null || variable.isEmpty())){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
@@ -273,7 +274,7 @@ String[] result = new String[2];
                     return;
                 }
 
-                 if (variable.isEmpty() || variable == null) variable = String.valueOf(edit.getText());
+
                 if (variable.isEmpty()){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
@@ -358,6 +359,10 @@ String[] result = new String[2];
         f23.setText("");
         f24.setText("");
         f25.setText("");
+
+        variable = null;
+        xStringFormatted = null;
+        yStringFormatted = null;
     }
 
 
@@ -556,7 +561,7 @@ try {
             sBuilder.insert(0, "0");
         }
         s = sBuilder.toString();
-        return s;
+        return s.replace(" ", "");
     }
 
     private void showCoordDialog() {
