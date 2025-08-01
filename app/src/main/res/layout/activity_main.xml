@@ -165,13 +165,13 @@
                     android:textColor="@color/khaki_text_primary"
           />
 
-
             <EditText
+                android:visibility="visible"
                 android:id="@+id/edit_var"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
                 android:layout_weight="0"
-                android:background="@drawable/input_button"
+                android:background="@color/khaki_input"
                 android:hint="@string/variable"
                 android:inputType="numberSigned"
                 android:padding="8dp"
@@ -311,6 +311,17 @@
             android:visibility="gone"
             android:background="@drawable/khaki_error_box"
             android:textColor="@color/khaki_text_primary"
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/alert_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:background="@drawable/khaki_alert_box"
+            android:textColor="@color/khaki_dark_bg"
             android:textSize="14sp"
             android:padding="12dp"
             android:gravity="center" />

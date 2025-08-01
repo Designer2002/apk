@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> {
+public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
     private final List<String> items;
     private int selectedPosition = -1;
@@ -23,7 +23,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
         void onThemeSelected(int themeIndex);
     }
 
-    public ThemeAdapter(RecyclerView r, List<String> items, OnThemeSelectedListener listener) {
+    public RecycleViewAdapter(RecyclerView r, List<String> items, OnThemeSelectedListener listener) {
         this.items = items;
         this.listener = listener;
         this.r = r;

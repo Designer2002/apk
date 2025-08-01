@@ -215,7 +215,7 @@
                 android:layout_weight="1"
                 android:hint="@string/variable"
                 android:inputType="numberSigned"
-                android:background="@drawable/input_button"
+                android:background="@color/khaki_input"
                 android:textColor="@color/khaki_text_primary"
                 android:textColorHint="@color/khaki_text_secondary"
                 android:padding="10dp"

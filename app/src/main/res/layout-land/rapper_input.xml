@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/alert_r"
+    android:padding="20dp"
+    android:layout_gravity="center"
+    android:background="@color/khaki_dark_grey"
+    android:layout_width="600dp"
+    android:layout_height="wrap_content">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:text="Координаты конечной точки в системе СК-42:"
+    android:textColor="@color/white"
+    android:textSize="20sp"
+    />
+    <TextView
+        android:text="X"
+        android:layout_gravity="center"
+        android:textColor="@color/khaki_input"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editX"
+        android:hint="X (широта конечной точки)"
+        android:backgroundTint="@color/khaki_secondary"
+        android:textColor="@color/khaki_text_primary"
+        android:textColorHint="@color/khaki_text_secondary"
+        android:inputType="numberSigned"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="Y"
+        android:layout_gravity="center"
+        android:textColor="@color/khaki_input"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editY"
+        android:hint="Y (долгота конечной точки)"
+        android:backgroundTint="@color/khaki_secondary"
+        android:textColor="@color/khaki_text_primary"
+        android:textColorHint="@color/khaki_text_secondary"
+        android:inputType="numberSigned"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/error_message2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:background="@drawable/khaki_error_box"
+        android:textColor="@color/khaki_text_primary"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:gravity="center" />
+    <Button
+        android:id="@+id/saveBtn"
+        android:text="Сохранить"
+        android:textColor="@color/khaki_dark_bg"
+        android:backgroundTint="@color/khaki_accent"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!-- Error Message -->
+
+</LinearLayout>

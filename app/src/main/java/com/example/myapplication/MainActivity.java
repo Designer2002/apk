@@ -11,10 +11,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
+import android.graphics.PorterDuff;
 import android.location.LocationManager;
-import android.location.LocationListener;
 import android.os.Handler;
 import android.provider.Settings;
 import android.content.Intent;
@@ -22,16 +20,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,8 +37,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static double att;
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted;
+    private static String variable;
     private static  String xStringFormatted;
     private  TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
     private Button calcButton;
@@ -63,19 +60,11 @@ public class MainActivity extends AppCompatActivity {
     private  TextView viewY;
     private TextView rapperVal;
     private Button rapper;
+    private TextView alertView;
     private TextView errorView, errorView2;
     private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
-        int multiplier = coordinate.indexOf('.') <= 2 ? 100000 : 10000;
-        int result = (int) Math.round(number * multiplier);
-        String resStr =String.valueOf(result);
-        if (resStr.length() > 7 && !resStr.contains("-")){
-            return resStr.substring(0,7);
-        }
-        else if(resStr.startsWith("-") && resStr.length()>8){
-            return resStr.substring(0,8);
-        }
-        else return resStr;
+        return String.valueOf(Math.round(number));
     }
     private void DisplayError(String text, TextView errorView){
         errorView.setText(text);
@@ -87,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
         }, 6000);
         return;
     }
+    private void DisplayAlert(String text, int d){
+        alertView.setText(text);
+        alertView.setVisibility(View.VISIBLE);
+        alertView.postDelayed(new Runnable() {
+            public void run() {
+                alertView.setVisibility(View.GONE);
+            }
+        }, 6000);
+        return;
+    }
+
+
+
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -94,8 +97,13 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
         super.onCreate(savedInstanceState);
+        //switchTheme(2);
+
         setContentView(R.layout.activity_main);
+        ShowChooseDialog();
+
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -103,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this)); // this — это Activity context
         }
-        ShowChooseDialog();
+        //ShowChooseDialog();
         ImageButton button = findViewById(R.id.gps_button);
         errorView = findViewById(R.id.error_message);
 
@@ -111,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         viewX = findViewById(R.id.x);
         viewY = findViewById(R.id.y);
         table = findViewById(R.id.khaki_table);
+        alertView = findViewById(R.id.alert_message);
+        alertView.setOnClickListener(v -> alertView.setVisibility(View.GONE));
         LinearLayout spinner = findViewById(R.id.spinner_layout);
         //поля таблицы
          f00 = table.findViewById(R.id.f00);
@@ -219,6 +229,7 @@ String[] result = new String[2];
 
                                     //люто питоним!!
                                     PyObject module = py.getModule("convert");  // имя файла без .py
+                                    //мы включили жпс но он вставил то что мы захрадкодили а не то что реальное
                                     PyObject pyresult = module.callAttr("convert", lat, lon);
                                     String resStr = pyresult.toString();
                                     result = resStr.replace("[", "").replace("]", "").split(",");
@@ -262,7 +273,7 @@ String[] result = new String[2];
                     return;
                 }
 
-                String variable = String.valueOf(edit.getText());
+                 variable = String.valueOf(edit.getText());
                 if (variable.isEmpty()){
                     DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
                     return;
@@ -301,6 +312,8 @@ String[] result = new String[2];
 
 
     }
+
+
 
     private int getNumber(int selected) {
         switch (selected){
@@ -407,6 +420,7 @@ try {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void ShowChooseDialog() {
         List<String> options = Arrays.asList(
                 getString(R.string.r7),
@@ -440,7 +454,7 @@ try {
 //                handler.postDelayed(this, 8);
 //            }
 //        };
-        ThemeAdapter adapter = new ThemeAdapter(recyclerView, options, index -> {
+        RecycleViewAdapter adapter = new RecycleViewAdapter(recyclerView, options, index -> {
             selected = index % options.size(); // по mod вернуть настоящий индекс
             //handler.removeCallbacks(scrollRunnable);
         });
@@ -463,6 +477,19 @@ try {
                 }
                 TextView t = findViewById(R.id.title_text);
                 t.setText(getSelectedText(selected));
+                if (selected == 2) {
+                    edit.getBackground().setColorFilter(Color.parseColor("#061614A6"), PorterDuff.Mode.SRC_ATOP);
+                    edit.setFocusable(false);
+                    edit.setEnabled(false);
+                    edit.setFocusableInTouchMode(false);
+                    edit.clearFocus();
+                } else {
+                    edit.getBackground().clearColorFilter();
+                    edit.setFocusable(true);
+                    edit.setEnabled(true);
+                    edit.setFocusableInTouchMode(true);
+                }
+                //switchTheme(selected);
             }
 
         });
@@ -510,7 +537,9 @@ try {
                     PyObject pyresult = module.callAttr("inverse_geo", viewX.getText().toString(), viewY.getText().toString(), x, y);
                     String resStr = pyresult.toString();
                     result = resStr.replace("[", "").replace("]", "").split(",");
-                    rapperVal.setText("УГОЛ: " +result[1] + "\nРАССТОЯНИЕ: " + result[0]);
+                    DisplayAlert("Обратная геодезическая задача посчитана!\nУГОЛ: " +result[1] + "\nРАССТОЯНИЕ: " + result[0], 10);
+                    variable = fillVrlms(result[1]);
+                    edit.setText(variable);
                 } catch (Exception e) {
                     DisplayError(e.toString(), errorView);
                     return;
@@ -523,6 +552,18 @@ try {
         });
 
         dialog.show();
+    }
+
+    private String fillVrlms(String s) {
+        String[] sa = s.split(".");
+        s = sa[0];
+        s += "0";
+        StringBuilder sBuilder = new StringBuilder(s);
+        while (sBuilder.length() < 4){
+            sBuilder.insert(0, "0");
+        }
+        s = sBuilder.toString();
+        return s;
     }
 
     private void showCoordDialog() {
@@ -576,7 +617,10 @@ try {
     protected void onDestroy() {
         RememberIn(table);
         super.onDestroy();
+
     }
+
+
 
     private void RememberIn(TableLayout table){
         Gson gson = new Gson();
@@ -635,4 +679,5 @@ try {
         }
         return "";
     }
+
 }

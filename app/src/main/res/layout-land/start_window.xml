@@ -12,16 +12,16 @@
         android:id="@+id/theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:text="@string/title_rap"
         android:textColor="@color/khaki_text_primary"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        android:layout_width="300dp"
-        android:layout_height="550dp"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
         android:orientation="horizontal"
         android:clipToPadding="false"
         android:paddingStart="16dp"

@@ -15,4 +15,37 @@
     <color name="khaki_grey">#c6dbb8</color>
     <color name="khaki_dark_grey">#202824</color>
     <color name="grey">#757a73</color>
+    <color name="khaki_field">#416B46</color>
+        <!-- Khaki Colors -->
+        <color name="colorPrimaryKhaki">#556B2F</color> <!-- OliveDrab -->
+        <color name="colorPrimaryVariantKhaki">#4B5320</color> <!-- Army green -->
+        <color name="colorOnPrimaryKhaki">#F5F5DC</color> <!-- Beige -->
+        <color name="colorSecondaryKhaki">#6B8E23</color> <!-- OliveDrabLight -->
+        <color name="colorOnSecondaryKhaki">#C0C0A0</color> <!-- Muted khaki -->
+        <color name="backgroundKhaki">#2E3B2B</color>
+        <color name="textPrimaryKhaki">#F5F5DC</color>
+        <color name="textSecondaryKhaki">#C0C0A0</color>
+
+        <!-- Yellow Theme Colors -->
+        <color name="colorPrimaryYellow">#D8C88D</color>
+        <color name="colorPrimaryVariantYellow">#C6B65C</color>
+        <color name="colorOnPrimaryYellow">#3A321A</color>
+        <color name="colorSecondaryYellow">#C6B65C</color>
+        <color name="colorOnSecondaryYellow">#3A321A</color>
+        <color name="backgroundYellow">#F6F1D4</color>
+        <color name="textPrimaryYellow">#3A321A</color>
+        <color name="textSecondaryYellow">#5E5530</color>
+
+        <!-- Blue Theme Colors -->
+        <color name="colorPrimaryBlue">#A2D8C2</color>
+        <color name="colorPrimaryVariantBlue">#80C8B4</color>
+        <color name="colorOnPrimaryBlue">#A6061614</color>
+        <color name="colorSecondaryBlue">#80C8B4</color>
+        <color name="colorOnSecondaryBlue">#0F2F25</color>
+        <color name="backgroundBlue">#CFF0E5</color>
+        <color name="textPrimaryBlue">#1B3C38</color>
+        <color name="textSecondaryBlue">#497F74</color>
+
+
+
 </resources>
