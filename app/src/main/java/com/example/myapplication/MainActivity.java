@@ -134,6 +134,19 @@ public class MainActivity extends AppCompatActivity {
         hand_input.setOnClickListener(v -> {
             showCoordDialog();
         });
+
+        //rapper btn
+        Button rapper = findViewById(R.id.rapper_btn);
+        TextView rapperVal = findViewById(R.id.rapper_value);
+        if (selected == 2){
+            rapper.setVisibility(View.VISIBLE);
+            rapperVal.setVisibility(View.VISIBLE);
+        }
+        rapper.setOnClickListener(v -> {
+            showRapperDialog();
+        });
+
+
         //загрузить прошлое состояние и проверить включена ли запоминалка
         SharedPreferences prefs = getSharedPreferences("checkbox_prefs", MODE_PRIVATE);
         boolean isChecked = prefs.getBoolean("checkbox_state", false);
@@ -375,11 +388,11 @@ try {
                 getString(R.string.r5)
         );
 
-        // Повторим данные чтобы было как будто бесконечно
-        List<String> infiniteOptions = new ArrayList<>();
-        for (int i = 0; i < 100; i++) infiniteOptions.addAll(options);
-        // Старт с середины
-        int initialPos = infiniteOptions.size() / 2;
+//        // Повторим данные чтобы было как будто бесконечно
+//        List<String> infiniteOptions = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) infiniteOptions.addAll(options);
+//        // Старт с середины
+        //int initialPos = infiniteOptions.size() / 2;
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.start_window, null);
 
@@ -390,28 +403,28 @@ try {
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        Runnable scrollRunnable = new Runnable() {
-            int position = initialPos;
-
-            @Override
-            public void run() {
-                position++;
-                recyclerView.scrollBy(0, 2);  // скроллим на 1 пиксель вниз
-                handler.postDelayed(this, 8);
-            }
-        };
-        ThemeAdapter adapter = new ThemeAdapter(recyclerView, infiniteOptions, index -> {
+//        Runnable scrollRunnable = new Runnable() {
+//            int position = initialPos;
+//
+//            @Override
+//            public void run() {
+//                position++;
+//                recyclerView.scrollBy(0, 2);  // скроллим на 1 пиксель вниз
+//                handler.postDelayed(this, 8);
+//            }
+//        };
+        ThemeAdapter adapter = new ThemeAdapter(recyclerView, options, index -> {
             selected = index % options.size(); // по mod вернуть настоящий индекс
-            handler.removeCallbacks(scrollRunnable);
+            //handler.removeCallbacks(scrollRunnable);
         });
         recyclerView.setAdapter(adapter);
+//
+//
+//        recyclerView.scrollToPosition(initialPos);
+//
+//
 
-
-        recyclerView.scrollToPosition(initialPos);
-
-
-
-        handler.postDelayed(scrollRunnable, 500); // подождать чуть перед стартом
+        //handler.postDelayed(scrollRunnable, 500); // подождать чуть перед стартом
         // Кнопка "Continue"
         Button continueBtn = view.findViewById(R.id.continue_button);
         continueBtn.setOnClickListener(v -> {
@@ -429,6 +442,43 @@ try {
         dialog.show();
     }
 
+
+    private void showRapperDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.rapper_input, null);
+        errorView2 = view.findViewById(R.id.error_message2);
+        EditText editX = view.findViewById(R.id.editX);
+        EditText editY = view.findViewById(R.id.editY);
+        Button saveBtn = view.findViewById(R.id.saveBtn);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+
+        saveBtn.setOnClickListener(v -> {
+            try {
+
+                String x = editX.getText().toString().trim();
+                String y = editY.getText().toString().trim();
+                if (!CheckFormat(x) || !CheckFormat(y)) {
+                    DisplayError("Неверный формат введеных координат", errorView2);
+                    viewX.setText(getString(R.string.x_coord));
+                    viewY.setText(getString(R.string.y_coord));
+                    return;
+                }
+                xStringFormatted = x;
+                yStringFormatted = y;
+                viewX.setText(xStringFormatted);
+                viewY.setText(yStringFormatted);
+                dialog.dismiss();
+            }
+            catch (Exception e){
+                DisplayError("Данные введены неккоретно!", errorView);
+            }
+        });
+
+        dialog.show();
+    }
 
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -474,6 +524,8 @@ try {
             return coord.length()==7;
         }
     }
+
+
 
     @Override
     protected void onDestroy() {

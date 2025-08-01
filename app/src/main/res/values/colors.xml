@@ -13,5 +13,6 @@
     <color name="khaki_button_pressed">#3B4220</color>
     <color name="khaki_input">#3B9460</color>
     <color name="khaki_grey">#c6dbb8</color>
+    <color name="khaki_dark_grey">#7E202824</color>
     <color name="grey">#757a73</color>
 </resources>

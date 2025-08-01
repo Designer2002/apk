@@ -39,6 +39,7 @@ chaquopy {
     defaultConfig {
         pip {
             install("pyproj")
+            install("pygeoguz")
         }
     }
 }
