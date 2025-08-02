@@ -11,17 +11,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -39,6 +45,7 @@ import com.google.android.gms.location.Priority;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
     private static double lat;
     private static double lon;
+
     private static double att;
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted;
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private Button calcButton;
     private  EditText edit;
     private int selected = -1;
+
     private TextView viewX;
     private TableLayout table;
     private  TextView viewY;
@@ -91,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (getSupportActionBar() != null) {
@@ -166,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 DisplayError("Для расчёта реперной точки нужна стартовая позиция. Она либо введена некорректно, либо не введена вовсе. Работать не будет", errorView);
             }
         });
+
+
 
 
 //        //загрузить прошлое состояние и проверить включена ли запоминалка
@@ -318,13 +329,13 @@ String[] result = new String[2];
 
     private int getNumber(int selected) {
         switch (selected){
-            case 0:
-                return 7;
             case 1:
-                return 6;
+                return 7;
             case 2:
                 return 6;
             case 3:
+                return 6;
+            case 4:
                 return 5;
             default:
                 break;
@@ -428,6 +439,7 @@ try {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void ShowChooseDialog() {
         List<String> options = Arrays.asList(
+                getString(R.string.default_rap),
                 getString(R.string.r7),
                 getString(R.string.r6),
                 getString(R.string.r62),
@@ -478,7 +490,11 @@ try {
                 dialog.dismiss();
                 TextView t = findViewById(R.id.title_text);
                 t.setText(getSelectedText(selected));
-                if (selected == 2) {
+                if(selected == 0){
+                    Intent intent = new Intent(MainActivity.this, ZoomActivity.class);
+                    startActivity(intent);
+                }
+                if (selected == 3 || selected == 1) {
                     edit.setVisibility(View.GONE);
                     rapperVal.setVisibility(View.VISIBLE);
                     rapper.setVisibility(View.VISIBLE);
@@ -486,6 +502,9 @@ try {
                     edit.setVisibility(View.VISIBLE);
                     rapperVal.setVisibility(View.GONE);
                     rapper.setVisibility(View.GONE);
+                }
+                if(selected==0){
+
                 }
                 //switchTheme(selected);
             }
@@ -498,6 +517,7 @@ try {
         dialog.setCancelable(false);
         dialog.show();
     }
+
 
 
     private void showRapperDialog() {
@@ -664,13 +684,13 @@ try {
 
     private String getSelectedText(int sel){
         switch (sel){
-            case 0:
-                return getString(R.string.r7);
             case 1:
-                return getString(R.string.r6);
+                return getString(R.string.r7);
             case 2:
-                return getString(R.string.r62);
+                return getString(R.string.r6);
             case 3:
+                return getString(R.string.r62);
+            case 4:
                 return getString(R.string.r5);
             default:
                 break;
