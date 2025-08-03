@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spinner Layout -->
+<LinearLayout android:id="@+id/spinner_layout"
+    android:layout_width="250dp"
+    android:layout_gravity="top|center"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:layout_marginTop="100dp"
+    android:background="@color/khaki_light"
+    android:visibility="visible"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textSize="18sp"
+    android:textColor="@color/textPrimaryBlue"
+    android:text="ПРИДЕТСЯ НЕМНОГО ПОДОЖДАТЬ...."/>
+    <ProgressBar
+        android:id="@+id/gps_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/backgroundYellow" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gps_process"
+        android:textColor="@color/khaki_dark_grey"
+         />
+</LinearLayout>

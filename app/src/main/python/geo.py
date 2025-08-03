@@ -39,3 +39,5 @@ def true_angle(angle: float, max_value: int) -> float:
         return angle + max_value
     else:
         return angle
+    
+print(inverse_geo(111, 567, 100, 400))

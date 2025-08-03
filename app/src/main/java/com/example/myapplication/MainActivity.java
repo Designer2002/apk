@@ -7,35 +7,28 @@ import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import com.chaquo.python.Python;
+
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.PorterDuff;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,7 +38,6 @@ import com.google.android.gms.location.Priority;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,12 +45,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
     private static double lat;
     private static double lon;
-
+private  final  String msg = "Для расчёта реперной точки нужна стартовая позиция. Она либо введена некорректно, либо не введена вовсе. Работать не будет";
     private static double att;
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted;
     private static String variable;
     private static  String xStringFormatted;
+
+    private View rapper, geo, geo2;
     private  TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
     private Button calcButton;
     private  EditText edit;
@@ -67,34 +61,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView viewX;
     private TableLayout table;
     private  TextView viewY;
-    private TextView rapperVal;
-    private Button rapper;
-    private TextView alertView;
-    private TextView errorView, errorView2;
+    private TextView viewX2, viewY2;
+    private  TextView angleView, sView;
+
     private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
         return String.valueOf(Math.round(number));
     }
-    private void DisplayError(String text, TextView errorView){
-        errorView.setText(text);
-        errorView.setVisibility(View.VISIBLE);
-        errorView.postDelayed(new Runnable() {
-            public void run() {
-                errorView.setVisibility(View.GONE);
-            }
-        }, 6000);
-        return;
-    }
-    private void DisplayAlert(String text, int d){
-        alertView.setText(text);
-        alertView.setVisibility(View.VISIBLE);
-        alertView.postDelayed(new Runnable() {
-            public void run() {
-                alertView.setVisibility(View.GONE);
-            }
-        }, 6000);
-        return;
-    }
+
+
+
 
 
 
@@ -121,16 +97,22 @@ public class MainActivity extends AppCompatActivity {
             Python.start(new AndroidPlatform(this)); // this — это Activity context
         }
         //ShowChooseDialog();
-        ImageButton button = findViewById(R.id.gps_button);
-        errorView = findViewById(R.id.error_message);
+        ImageButton GPSbutton = findViewById(R.id.gps_button);
+
 
         edit = findViewById(R.id.edit_var);
         viewX = findViewById(R.id.x);
         viewY = findViewById(R.id.y);
+        viewX2 = findViewById(R.id.x2);
+        viewY2=findViewById(R.id.y2);
         table = findViewById(R.id.khaki_table);
-        alertView = findViewById(R.id.alert_message);
-        alertView.setOnClickListener(v -> alertView.setVisibility(View.GONE));
-        LinearLayout spinner = findViewById(R.id.spinner_layout);
+        geo2 = findViewById(R.id.geo_ext_2);
+
+        rapper = findViewById(R.id.rapper_ext);
+        geo = findViewById(R.id.geo_ext);
+        angleView = findViewById(R.id.angle);
+        sView = findViewById(R.id.s);
+
         //поля таблицы
          f00 = table.findViewById(R.id.f00);
          f01 = table.findViewById(R.id.f01);
@@ -164,17 +146,7 @@ public class MainActivity extends AppCompatActivity {
             showCoordDialog();
         });
 
-        //rapper btn
-         rapper = findViewById(R.id.rapper_btn);
-        rapperVal = findViewById(R.id.rapper_value);
 
-        rapper.setOnClickListener(v -> {
-            if (CheckFormat(viewX.getText().toString()) && CheckFormat(viewY.getText().toString()))
-                showRapperDialog();
-            else{
-                DisplayError("Для расчёта реперной точки нужна стартовая позиция. Она либо введена некорректно, либо не введена вовсе. Работать не будет", errorView);
-            }
-        });
 
 
 
@@ -197,19 +169,13 @@ public class MainActivity extends AppCompatActivity {
         cleanBtn.setOnClickListener(v -> {
             ClearData();
         });
+        final boolean[] ready = new boolean[]{false};
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        errorView.setOnClickListener(view->{
-            errorView.setVisibility(View.GONE);
-        });
-        button.setOnClickListener(v -> {
-                    calcButton.setEnabled(false);
-                    calcButton.setBackgroundColor(R.color.grey);
+        GPSbutton.setOnClickListener(v -> {
+            ShowSpinnerDialog(ready);
                     // не дали доступ если
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
-                        calcButton.setEnabled(true);
-                        calcButton.setBackgroundColor(R.color.khaki_secondary);
-
                         return;
                     }
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -217,12 +183,9 @@ public class MainActivity extends AppCompatActivity {
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                calcButton.setEnabled(true);
-                calcButton.setBackgroundColor(R.color.khaki_secondary);
 
                 return;
             }
-            spinner.setVisibility(View.VISIBLE);
                     fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                             .addOnSuccessListener(location -> {
                                 if (location != null) {
@@ -245,7 +208,7 @@ String[] result = new String[2];
                                     String resStr = pyresult.toString();
                                     result = resStr.replace("[", "").replace("]", "").split(",");
                                 } catch (Exception e) {
-                                    DisplayError(e.toString(), errorView);
+                                    DisplayError(e.toString());
                                     return;
                                 }
 
@@ -259,41 +222,75 @@ String[] result = new String[2];
                                 yStringFormatted = FormatCoord(yString);
                                 viewX.setText(xStringFormatted);
                                 viewY.setText(yStringFormatted);
-                                spinner.setVisibility(View.GONE);
-                                calcButton.setEnabled(true);
-                                calcButton.setBackgroundColor(R.color.khaki_secondary);
+
+                                ready[0] = true;
                             });
                 });
 
         calcButton.setOnClickListener(v -> {
+//если есть реперная точка!
+            if (selected == 1 || selected == 3) {
+                String startx, starty, endx, endy;
+                try {
+                    startx = viewX.getText().toString();
+                    starty = viewY.getText().toString();
+                    endx = viewX2.getText().toString();
+                    endy = viewY2.getText().toString();
+                }
+                catch (Exception e){
+                    DisplayError("Данных для расчёта не хватает. Введите данные корректно и попробуйте снова");
+                    return;
+                }
+                String[] result;
+                try {
+                    Python py = Python.getInstance();
+
+                    //люто питоним снова!!
+                    PyObject module = py.getModule("geo");  // имя файла без .py
+                    PyObject pyresult = module.callAttr("inverse_geo", startx, starty, endx, endy);
+                    String resStr = pyresult.toString();
+                    result = resStr.replace("[", "").replace("]", "").split(",");
+                    variable = fillVrlms(result[1]);
+                    edit.setText(variable);
+                    angleView.setText(result[1]);
+                    sView.setText(result[0]);
+
+                } catch (Exception e) {
+                    DisplayError(e.toString());
+                    return;
+                }
+            }
+
+
 
             try{
                 //2.заполняем таблицу
                 //но сначала надо убедиться что третья переменная тоже введена
                 if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
                 if (edit.getText() == null && (variable == null || variable.isEmpty())){
-                    DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
+                    DisplayError("Перед расчётом необходимо ввести третью переменную");
                     return;
                 }
                 if (xStringFormatted==null||yStringFormatted==null)
                 {
-                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную",errorView);
+                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную");
                     return;
                 }
                 if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
-                    DisplayError("Что-то введено не так!",errorView);
+                    DisplayError("Что-то введено не так!");
                     return;
                 }
 
 
                 if (variable.isEmpty()){
-                    DisplayError("Перед расчётом необходимо ввести третью переменную",errorView);
+                    DisplayError("Перед расчётом необходимо ввести третью переменную");
                     return;
                 }
                 if ((!variable.contains("-") && variable.length()!=4) || (variable.contains("-")&&variable.length()!=5)){
-                    DisplayError("Неверный формат третьей переменной",errorView);
+                    DisplayError("Неверный формат третьей переменной");
                     return;
                 }
+
 
                 //сделаем таблицу а потом фигачим в ту что на телефоне
                 Integer[][] result = Formula.calculate(xStringFormatted, yStringFormatted, variable, getNumber(selected));
@@ -317,7 +314,7 @@ String[] result = new String[2];
                 f25.setText(String.valueOf(result[2][5]));
             }
             catch (Exception e) {
-                DisplayError(e.toString(), errorView);
+                DisplayError(e.toString());
             }
 
         });
@@ -346,8 +343,8 @@ String[] result = new String[2];
     private void ClearData() {
         // Очистка координат и переменной
         edit.setText("");
-        viewX.setText(R.string.x_coord);
-        viewY.setText(R.string.y_coord);
+        viewX.setText("");
+        viewY.setText("");
 
         // Очистка таблицы
         f00.setText("");
@@ -429,7 +426,7 @@ try {
 
     }
 }catch (Exception e){
-    DisplayError("Не удалось подгрузить данные с последнего расчёта", errorView);
+    DisplayError("Не удалось подгрузить данные с последнего расчёта");
     //DisplayError(e.toString(), errorView);
 
 }
@@ -495,12 +492,19 @@ try {
                     startActivity(intent);
                 }
                 if (selected == 3 || selected == 1) {
-                    edit.setVisibility(View.GONE);
-                    rapperVal.setVisibility(View.VISIBLE);
+                    edit.setFocusable(false);
+                    edit.setFocusableInTouchMode(false);
+                    edit.clearFocus();
+                    edit.setBackground(getDrawable(R.drawable.input_button_locked));
+                    geo.setVisibility(View.VISIBLE);
+                    geo2.setVisibility(View.VISIBLE);
                     rapper.setVisibility(View.VISIBLE);
                 } else {
-                    edit.setVisibility(View.VISIBLE);
-                    rapperVal.setVisibility(View.GONE);
+                    edit.setFocusable(true);
+                    edit.setFocusableInTouchMode(true);
+                    edit.setBackground(getDrawable(R.drawable.input_button));
+                    geo.setVisibility(View.GONE);
+                    geo2.setVisibility(View.GONE);
                     rapper.setVisibility(View.GONE);
                 }
                 if(selected==0){
@@ -523,7 +527,6 @@ try {
     private void showRapperDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.rapper_input, null);
-        errorView2 = view.findViewById(R.id.error_message2);
         EditText editX = view.findViewById(R.id.editX);
         EditText editY = view.findViewById(R.id.editY);
         Button saveBtn = view.findViewById(R.id.saveBtn);
@@ -537,35 +540,21 @@ try {
 
                 String x = editX.getText().toString().trim();
                 String y = editY.getText().toString().trim();
+                String startx = viewX.getText().toString();
+                String starty = viewY.getText().toString();
                 try{
                     Double test = Double.parseDouble(x);
                     test = Double.parseDouble(y);
                 }
                 catch (Exception e){
-                    DisplayError("Неверный формат введеных координат", errorView2);
-                    rapperVal.setText(getString(R.string.undefined));
+                    DisplayError("Неверный формат введеных координат");
                     return;
                 }
-                String[] result;
-                try {
-                    Python py = Python.getInstance();
 
-                    //люто питоним снова!!
-                    PyObject module = py.getModule("geo");  // имя файла без .py
-                    PyObject pyresult = module.callAttr("inverse_geo", viewX.getText().toString(), viewY.getText().toString(), x, y);
-                    String resStr = pyresult.toString();
-                    result = resStr.replace("[", "").replace("]", "").split(",");
-                    DisplayAlert("Обратная геодезическая задача посчитана!\nУГОЛ: " +result[1] + "\nРАССТОЯНИЕ: " + result[0], 10);
-                    variable = fillVrlms(result[1]);
-                    rapperVal.setText(variable);
-                } catch (Exception e) {
-                    DisplayError(e.toString(), errorView);
-                    return;
-                }
                 dialog.dismiss();
             }
             catch (Exception e){
-                DisplayError("Данные введены неккоретно!", errorView);
+                DisplayError("Данные введены неккоретно!");
             }
         });
 
@@ -573,21 +562,15 @@ try {
     }
 
     private String fillVrlms(String s) {
-        String[] sa = s.split("\\.");
-        s = sa[0];
-        s += "0";
-        StringBuilder sBuilder = new StringBuilder(s);
-        while (sBuilder.length() < 4){
-            sBuilder.insert(0, "0");
-        }
-        s = sBuilder.toString();
-        return s.replace(" ", "");
+        s = s.replace(".", "");
+        s = s.substring(0,4);
+        s = "0"+s;
+        return  s.replace(" ", "");
     }
 
     private void showCoordDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.input_alert, null);
-        errorView2 = view.findViewById(R.id.error_message2);
         EditText editX = view.findViewById(R.id.editX);
         EditText editY = view.findViewById(R.id.editY);
         Button saveBtn = view.findViewById(R.id.saveBtn);
@@ -602,9 +585,9 @@ try {
                 String x = editX.getText().toString().trim();
                 String y = editY.getText().toString().trim();
                 if (!CheckFormat(x) || !CheckFormat(y)) {
-                    DisplayError("Неверный формат введеных координат", errorView2);
-                    viewX.setText(getString(R.string.x_coord));
-                    viewY.setText(getString(R.string.y_coord));
+                    DisplayError("Неверный формат введеных координат");
+                    viewX.setText("");
+                    viewY.setText("");
                     return;
                 }
                 xStringFormatted = x;
@@ -614,7 +597,7 @@ try {
                 dialog.dismiss();
             }
             catch (Exception e){
-                DisplayError("Данные введены неккоретно!", errorView);
+                DisplayError("Данные введены неккоретно!");
             }
         });
 
@@ -677,7 +660,7 @@ try {
             if(edit.getText()!=null)prefs.edit().putString("variable", edit.getText().toString()).apply();
         }
         catch (Exception e){
-            DisplayError("Записать прошлый расчёт не удалось", errorView);
+            DisplayError("Записать прошлый расчёт не удалось");
         }
 
     }
@@ -696,6 +679,67 @@ try {
                 break;
         }
         return "";
+    }
+    private void ShowSpinnerDialog(boolean[] ready){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.spinner_layout, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+        LockOrient(dialog);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        // Проверка состояния переменной
+        Handler handler = new Handler();
+        Runnable checkFlag = new Runnable() {
+            @Override
+            public void run() {
+                if (ready[0]) {
+                    dialog.dismiss();
+                } else {
+                    handler.postDelayed(this, 300); // Проверять каждые 300 мс
+                }
+            }
+        };
+
+        handler.post(checkFlag);
+
+    }
+
+    private void  DisplayError(String string){
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.error_layout, null);
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setView(view)
+                    .create();
+        LockOrient(dialog);
+        TextView error = view.findViewById(R.id.error_message);
+        error.setText(string);
+Button close = view.findViewById(R.id.close);
+close.setOnClickListener(v -> dialog.dismiss());
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+
+    }
+    private void LockOrient(Dialog dialog){
+        int originalOrientation = getRequestedOrientation();
+
+// Заблокируем в текущей ориентации
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
+        dialog.setOnDismissListener(d -> {
+            // Вернем назад
+            setRequestedOrientation(originalOrientation);
+        });
+
+        dialog.show();
+
     }
 
 }

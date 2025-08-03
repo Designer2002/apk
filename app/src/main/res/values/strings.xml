@@ -2,8 +2,8 @@
     <string name="app_name">Расчёт по формуле</string>
     <string name="desc_button_icon">Определить геолокацию</string>
     <string name="desc_button_hand_icon">Ввести координаты вручную</string>
-    <string name="x_coord">Координата X\n(необходим ввод)</string>
-    <string name="y_coord">Координата Y\n(необходим ввод)</string>
+    <string name="x_coord">X\n(необходим ввод)</string>
+    <string name="y_coord">Y\n(необходим ввод)</string>
     <string name="variable">Вмрлс</string>
     <string name="calculate">Рассчитать</string>
     <string name="tableX">X</string>
@@ -15,9 +15,12 @@
     <string name="tablebdu1">БДУ х1</string>
     <string name="tabledu10">ДУ х10</string>
     <string name="tabledu1">ДУ х1</string>
-    <string name="gps_process">Идёт пересчёт координат в систему СК-42...</string>
+    <string name="gps_process">Идёт получение координат по GPS и пересчёт их в систему СК-42...</string>
     <string name="gps_title">По GPS</string>
     <string name="hand_title">Вручную</string>
+    <string name="pos">Позиция</string>
+    <string name="geo">ОГЗ</string>
+    <string name="p">P</string>
     <string name="scale">Масштаб: 1.0x</string>
     <string name="default_rap">Основной</string>
     <string name="title_vvod">Значения координат:</string>
@@ -28,7 +31,7 @@
     <string name="r6">Репер 6</string>
     <string name="r62">Репер 6 с реперной точкой</string>
     <string name="r7">Репер 7</string>
-    <string name="undefined">Beta мрлс\nНеопределённое значение (необходим расчёт)</string>
+    <string name="undefined">Beta мрлс\n (Необходим расчёт)</string>
     <string name="dot">Реперная точка (нажмите чтобы рассчитать)</string>
     <string name="title_rap">Что необходимо рассчитать?</string>
 </resources>

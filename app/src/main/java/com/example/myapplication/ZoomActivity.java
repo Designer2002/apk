@@ -49,6 +49,7 @@ home.setOnClickListener(v->{
 
     startActivity(intent);
 });
+
              imageView = findViewById(R.id.zoomable_image);
 
             // далее — масштаб и прокрутка, как уже настроено
@@ -58,17 +59,16 @@ home.setOnClickListener(v->{
         scaleDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
+                float prevScale = scaleFactor;
                 scaleFactor *= detector.getScaleFactor();
+                scaleFactor = Math.max(2.2f, Math.min(scaleFactor, 6.0f));
 
-                // Ограничим масштаб
-                scaleFactor = Math.max(1.0f, Math.min(scaleFactor, 6.0f));
+                float scaleChange = scaleFactor / prevScale;
 
-                matrix.postScale(
-                        detector.getScaleFactor(),
-                        detector.getScaleFactor(),
-                        detector.getFocusX(),
-                        detector.getFocusY()
-                );
+                // Применяем относительный масштаб, но с ограничением
+                matrix.postScale(scaleChange, scaleChange, detector.getFocusX(), detector.getFocusY());
+
+                fixTranslation();
 
                 imageView.setImageMatrix(matrix);
                 updateScaleText();
@@ -134,7 +134,7 @@ home.setOnClickListener(v->{
 
             return true;
         });
-
+        updateScaleText();
     }
     void fixTranslation() {
         if (imageView.getDrawable() == null) return;
@@ -171,6 +171,6 @@ home.setOnClickListener(v->{
         matrix.postTranslate(dx, dy);
     }
     private void updateScaleText() {
-        scaleLabel.setText(String.format(Locale.getDefault(), "Масштаб: %.1fx", scaleFactor));
+        scaleLabel.setText(String.format(Locale.getDefault(), "Масштаб: %.1fx", scaleFactor/2));
     }
 }

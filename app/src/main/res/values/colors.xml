@@ -43,8 +43,10 @@
         <color name="colorSecondaryBlue">#80C8B4</color>
         <color name="colorOnSecondaryBlue">#0F2F25</color>
         <color name="backgroundBlue">#CFF0E5</color>
-        <color name="textPrimaryBlue">#1B3C38</color>
+        <color name="textPrimaryBlue">#2A4D3F</color>
         <color name="textSecondaryBlue">#497F74</color>
+
+    <color name="red">#2F0909</color>
 
 
 
