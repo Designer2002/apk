@@ -18,6 +18,7 @@
     <string name="gps_process">Идёт получение координат по GPS и пересчёт их в систему СК-42...</string>
     <string name="gps_title">По GPS</string>
     <string name="hand_title">Вручную</string>
+    <string name="gps2_title">По GPS (реперная точка)</string>
     <string name="pos">Позиция</string>
     <string name="geo">ОГЗ</string>
     <string name="p">P</string>

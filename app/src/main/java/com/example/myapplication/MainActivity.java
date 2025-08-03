@@ -48,20 +48,21 @@ public class MainActivity extends AppCompatActivity {
 private  final  String msg = "Для расчёта реперной точки нужна стартовая позиция. Она либо введена некорректно, либо не введена вовсе. Работать не будет";
     private static double att;
     private int position = Integer.MAX_VALUE / 2;
-    private static String yStringFormatted;
+    private static String yStringFormatted, x2StringFormatted;
     private static String variable;
-    private static  String xStringFormatted;
+    private static  String xStringFormatted, y2StringFormatted, endx, endy;
 
     private View rapper, geo, geo2;
     private  TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
     private Button calcButton;
     private  EditText edit;
     private int selected = -1;
+    private  ImageButton gps2;
 
-    private TextView viewX;
+    private EditText viewX;
     private TableLayout table;
-    private  TextView viewY;
-    private TextView viewX2, viewY2;
+    private  EditText viewY;
+    private EditText viewX2, viewY2;
     private  TextView angleView, sView;
 
     private static String FormatCoord(String coordinate) {
@@ -105,6 +106,10 @@ private  final  String msg = "Для расчёта реперной точки 
         viewY = findViewById(R.id.y);
         viewX2 = findViewById(R.id.x2);
         viewY2=findViewById(R.id.y2);
+
+
+
+
         table = findViewById(R.id.khaki_table);
         geo2 = findViewById(R.id.geo_ext_2);
 
@@ -133,6 +138,28 @@ private  final  String msg = "Для расчёта реперной точки 
          f24 = table.findViewById(R.id.f24);
          f25 = table.findViewById(R.id.f25);
 
+        viewX.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                xStringFormatted = viewX.getText().toString().trim();
+            }
+        });
+        viewY.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                yStringFormatted = viewY.getText().toString().trim();
+            }
+        });
+        viewX2.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                 endx = viewX2.getText().toString().trim();
+            }
+        });
+        viewY2.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                endy = viewY2.getText().toString().trim();
+            }
+        });
+
+
         //на главный экран
         ImageButton home = findViewById(R.id.home_button);
          home.setOnClickListener(v -> {
@@ -141,10 +168,7 @@ private  final  String msg = "Для расчёта реперной точки 
          });
 
         calcButton = findViewById(R.id.calx_btn);
-        ImageButton hand_input = findViewById(R.id.hand_button);
-        hand_input.setOnClickListener(v -> {
-            showCoordDialog();
-        });
+
 
 
 
@@ -165,72 +189,22 @@ private  final  String msg = "Для расчёта реперной точки 
 //            editor.putBoolean("checkbox_state", isNowChecked);
 //            editor.apply();
 //        });
+        gps2 = findViewById(R.id.gps2_button);
+        gps2.setOnClickListener(v->getGPS(1));
+
         ImageButton cleanBtn = findViewById(R.id.clear_button);
         cleanBtn.setOnClickListener(v -> {
             ClearData();
         });
-        final boolean[] ready = new boolean[]{false};
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         GPSbutton.setOnClickListener(v -> {
-            ShowSpinnerDialog(ready);
-                    // не дали доступ если
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
-                return;
-            }
-                    fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-                            .addOnSuccessListener(location -> {
-                                if (location != null) {
-                                    lat = location.getLatitude();
-                                    lon = location.getLongitude();
-                                    att = location.getAltitude();
-                                }
-
-                                // движуха
-                                //1.у нас есть широта долгота высота но они в системе координат WSG-84
-                                //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
-String[] result = new String[2];
-                                try {
-                                    Python py = Python.getInstance();
-
-                                    //люто питоним!!
-                                    PyObject module = py.getModule("convert");  // имя файла без .py
-                                    //мы включили жпс но он вставил то что мы захрадкодили а не то что реальное
-                                    PyObject pyresult = module.callAttr("convert", lat, lon);
-                                    String resStr = pyresult.toString();
-                                    result = resStr.replace("[", "").replace("]", "").split(",");
-                                } catch (Exception e) {
-                                    DisplayError(e.toString());
-                                    return;
-                                }
-
-
-
-                                double x = Double.parseDouble(result[0]);
-                                double y = Double.parseDouble(result[1]);
-                                String xString = String.valueOf(x);
-                                String yString = String.valueOf(y);
-                                xStringFormatted = FormatCoord(xString);
-                                yStringFormatted = FormatCoord(yString);
-                                viewX.setText(xStringFormatted);
-                                viewY.setText(yStringFormatted);
-
-                                ready[0] = true;
-                            });
+            getGPS(0);
                 });
 
         calcButton.setOnClickListener(v -> {
 //если есть реперная точка!
             if (selected == 1 || selected == 3) {
-                String startx, starty, endx, endy;
+                String startx, starty;
                 try {
                     startx = viewX.getText().toString();
                     starty = viewY.getText().toString();
@@ -264,13 +238,25 @@ String[] result = new String[2];
 
 
             try{
+                xStringFormatted = viewX.getText().toString().trim();
+                yStringFormatted = viewY.getText().toString().trim();
+
+                if(!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)){
+                    DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно");
+                }
                 //2.заполняем таблицу
                 //но сначала надо убедиться что третья переменная тоже введена
                 if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
-                if (edit.getText() == null && (variable == null || variable.isEmpty())){
+                if (edit.getText() == null){
                     DisplayError("Перед расчётом необходимо ввести третью переменную");
                     return;
                 }
+                variable=edit.getText().toString();
+                if (variable == null || variable.isEmpty()){
+                    DisplayError("Перед расчётом необходимо ввести третью переменную");
+                }
+
+
                 if (xStringFormatted==null||yStringFormatted==null)
                 {
                     DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную");
@@ -322,6 +308,75 @@ String[] result = new String[2];
 
     }
 
+    private void getGPS(int i) {
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        final boolean[] ready = new boolean[]{false};
+        ShowSpinnerDialog(ready);
+        // не дали доступ если
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+            return;
+        }
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+                        att = location.getAltitude();
+                    }
+
+                    // движуха
+                    //1.у нас есть широта долгота высота но они в системе координат WSG-84
+                    //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
+                    String[] result = new String[2];
+                    try {
+                        Python py = Python.getInstance();
+
+                        //люто питоним!!
+                        PyObject module = py.getModule("convert");  // имя файла без .py
+                        //мы включили жпс но он вставил то что мы захрадкодили а не то что реальное
+                        PyObject pyresult = module.callAttr("convert", lat, lon);
+                        String resStr = pyresult.toString();
+                        result = resStr.replace("[", "").replace("]", "").split(",");
+                    } catch (Exception e) {
+                        DisplayError(e.toString());
+                        return;
+                    }
+
+
+
+                    double x = Double.parseDouble(result[0]);
+                    double y = Double.parseDouble(result[1]);
+                    String xString = String.valueOf(x);
+                    String yString = String.valueOf(y);
+
+                    if(i == 0){
+
+                        xStringFormatted = FormatCoord(xString);
+                        yStringFormatted = FormatCoord(yString);
+                        viewX.setText(xStringFormatted);
+                        viewY.setText(yStringFormatted);
+
+                    }
+                    else{
+                        x2StringFormatted = FormatCoord(xString);
+                        y2StringFormatted = FormatCoord(yString);
+                        viewX2.setText(x2StringFormatted);
+                        viewY2.setText(y2StringFormatted);
+                    }
+
+                    ready[0] = true;
+                });
+
+    }
 
 
     private int getNumber(int selected) {
@@ -345,6 +400,8 @@ String[] result = new String[2];
         edit.setText("");
         viewX.setText("");
         viewY.setText("");
+        viewX2.setText("");
+        viewY2.setText("");
 
         // Очистка таблицы
         f00.setText("");
@@ -371,6 +428,8 @@ String[] result = new String[2];
         variable = null;
         xStringFormatted = null;
         yStringFormatted = null;
+        endx=null;
+        endy=null;
     }
 
 
@@ -491,7 +550,9 @@ try {
                     Intent intent = new Intent(MainActivity.this, ZoomActivity.class);
                     startActivity(intent);
                 }
+                View gps2l = findViewById(R.id.gps2l);
                 if (selected == 3 || selected == 1) {
+                    gps2l.setVisibility(View.VISIBLE);
                     edit.setFocusable(false);
                     edit.setFocusableInTouchMode(false);
                     edit.clearFocus();
@@ -500,6 +561,7 @@ try {
                     geo2.setVisibility(View.VISIBLE);
                     rapper.setVisibility(View.VISIBLE);
                 } else {
+                    gps2l.setVisibility(View.GONE);
                     edit.setFocusable(true);
                     edit.setFocusableInTouchMode(true);
                     edit.setBackground(getDrawable(R.drawable.input_button));
