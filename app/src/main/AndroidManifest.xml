@@ -15,10 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhakiDark" >
         <activity
+            android:name=".MainActivity7_62"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity6"
+            android:exported="false" />
+        <activity
             android:name=".ZoomActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".StartActivity"
             android:configChanges="screenSize|screenLayout"
             android:exported="true"
             android:screenOrientation="portrait" >

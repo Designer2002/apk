@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.ScaleGestureDetector;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -39,7 +37,7 @@ public class ZoomActivity extends AppCompatActivity {
         imageView = findViewById(R.id.img);
         ImageButton home = findViewById(R.id.back);
         home.setOnClickListener(v -> {
-            Intent intent = new Intent(ZoomActivity.this, MainActivity.class);
+            Intent intent = new Intent(ZoomActivity.this, StartActivity.class);
             startActivity(intent);
         });
         Button reset = findViewById(R.id.btnReset);
@@ -48,11 +46,13 @@ public class ZoomActivity extends AppCompatActivity {
         scaleText = findViewById(R.id.scaleText);
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
+
         imageView.setOnTouchListener((v, event) -> {
             scaleGestureDetector.onTouchEvent(event);
             // Return false so ScrollView/HScrollView can also scroll
             return false;
         });
+
         imageView.postDelayed(this::updateScaleText, 100);
     }
     private void updateScaleText() {

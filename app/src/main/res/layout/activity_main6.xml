@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:padding="16dp">
 
 
@@ -19,20 +20,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="6dp">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginStart="8dp">
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="13dp">
 
                 <TextView
                     android:text="@string/home_text"
                     android:textColor="@color/khaki_text_primary"
                     android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+
+                    android:layout_width="wrap_content" android:layout_height="48dp"/>
 
                 <ImageButton
                     android:padding="6dp"
@@ -55,7 +58,7 @@
                     android:text="@string/gps_title"
                     android:textColor="@color/khaki_text_primary"
                     android:gravity="center"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_width="wrap_content"/>
 
                 <ImageButton
@@ -84,7 +87,7 @@
                     android:text="@string/gps2_title"
                     android:textColor="@color/khaki_text_primary"
                     android:gravity="center"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_width="80dp"/>
 
                 <ImageButton
@@ -110,7 +113,7 @@
                     android:text="@string/clear_text"
                     android:textColor="@color/khaki_text_primary"
                     android:gravity="center"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_width="wrap_content"/>
 
                 <ImageButton
@@ -168,14 +171,13 @@
             android:gravity="start"
             android:padding="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginStart="-10dp">
+            android:layout_marginStart="-5dp">
             <TextView
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:text="@string/pos"
                 android:padding="1dp"
-                android:layout_marginEnd="3dp"
-                android:textSize="10sp"
+                android:textSize="13sp"
                 android:textColor="@color/colorOnSecondaryKhaki" />
             <EditText
                 android:id="@+id/x"
@@ -202,6 +204,9 @@
                 android:textColor="@color/khaki_text_primary" />
           />
 
+
+
+
             <EditText
                 android:visibility="visible"
                 android:id="@+id/edit_var"
@@ -217,55 +222,8 @@
 
 
 
-
-
-
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/rapper_ext"
-            android:visibility="gone"
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="start"
-            android:padding="10dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="-10dp">
-            <TextView
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:text="@string/p"
-                android:padding="1dp"
-                android:layout_marginEnd="3dp"
-                android:textSize="10sp"
-                android:textColor="@color/colorOnSecondaryKhaki" />
-            <EditText
-                android:id="@+id/x2"
-                android:inputType="numberSigned"
-                android:layout_width="100dp"
 
-                android:textColorHint="@color/khaki_input"
-                android:gravity="center"
-                android:layout_height="50dp"
-                android:padding="5dp"
-                android:background="@drawable/coord_field"
-                android:textColor="@color/khaki_text_primary" />
-
-            <EditText
-                android:id="@+id/y2"
-
-                android:textColorHint="@color/khaki_input"
-                android:inputType="numberSigned"
-                android:padding="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_width="100dp"
-                android:gravity="center"
-                android:layout_height="50dp"
-                android:background="@drawable/coord_field"
-                android:textColor="@color/khaki_text_primary"
-                />
-        </LinearLayout>
         <Button
             android:id="@+id/rapper_btn"
             android:layout_width="300dp"
