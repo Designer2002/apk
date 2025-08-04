@@ -1,79 +1,57 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:background="@color/colorOnSecondaryBlue"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    tools:context=".ZoomActivity">
 
-        android:layout_marginTop="87dp">
+    <!-- Top bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/backgroundKhaki"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        android:visibility="visible"
+        android:elevation="4dp">
+
+       <ImageButton
+           android:layout_width="54dp"
+           android:layout_height="54dp"
+           android:id="@+id/back"
+           android:scaleType="centerInside"
+           android:background="@drawable/gps_button"
+           android:src="@drawable/home"/>
 
         <TextView
-            android:text="@string/home_text"
-            android:textColor="@color/khaki_text_primary"
-            android:gravity="center"
-            android:layout_marginStart="40dp"
+            android:id="@+id/scaleText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_weight="1"
+            android:text="100%"
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
 
-        <ImageButton
-            android:padding="6dp"
-            android:id="@+id/home_button2"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="40dp"
-            android:background="@drawable/gps_button"
-            android:src="@drawable/home"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/desc_button_icon" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/zoom_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:rotation="-90"
-        >
-
-        <ImageView
-            android:id="@+id/zoomable_image"
-            android:layout_width="match_parent"
-android:layout_marginLeft="200dp"
-            android:layout_height="400dp"
-            android:src="@drawable/image"
-            android:scaleType="matrix"
-            android:padding="5dp"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="-330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp">
-        <TextView
-            android:id="@+id/scale_label"
+        <Button
+            android:id="@+id/btnReset"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/scale"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:background="@drawable/khaki_alert_box"
-            android:padding="6dp"
-            android:layout_marginTop="15dp"/>
-        <!--        <Button-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="50dp"-->
-        <!--            android:id="@+id/scale_btn"-->
-        <!--            android:layout_marginStart="40dp"-->
-        <!--            android:layout_gravity="end"-->
-        <!--            android:text="Сделать масштаб 100%"-->
-        <!--            android:background="@drawable/khaki_alert_box"-->
-        <!--            android:padding="6dp"-->
-        <!--            android:layout_marginTop="15dp"/>-->
+            android:layout_height="54dp"
+            android:text="Вернуть начальный размер" />
     </LinearLayout>
-</LinearLayout>
+
+
+            <com.example.myapplication.ZoomView
+                android:id="@+id/img"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image"
+                android:adjustViewBounds="true"
+                android:scaleType="matrix"/>
+
+
+</FrameLayout>

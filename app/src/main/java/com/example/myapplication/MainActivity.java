@@ -67,7 +67,7 @@ private  final  String msg = "Для расчёта реперной точки 
 
     private static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
-        return String.valueOf(Math.round(number));
+        return String.valueOf(Math.round(number)).substring(0, 7);
     }
 
 
@@ -205,16 +205,17 @@ private  final  String msg = "Для расчёта реперной точки 
 //если есть реперная точка!
             if (selected == 1 || selected == 3) {
                 String startx, starty;
-                try {
-                    startx = viewX.getText().toString();
-                    starty = viewY.getText().toString();
-                    endx = viewX2.getText().toString();
-                    endy = viewY2.getText().toString();
-                }
-                catch (Exception e){
-                    DisplayError("Данных для расчёта не хватает. Введите данные корректно и попробуйте снова");
+
+                    startx = viewX.getText().toString().trim();
+                    starty = viewY.getText().toString().trim();
+                    endx = viewX2.getText().toString().trim();
+                    endy = viewY2.getText().toString().trim();
+
+                if(endx == "" || endy == "" || startx == "" || starty == ""){
+                    DisplayError("Данных для расчёта не хватает! Введите данные корректно и попробуйте снова");
                     return;
                 }
+
                 String[] result;
                 try {
                     Python py = Python.getInstance();
@@ -237,44 +238,50 @@ private  final  String msg = "Для расчёта реперной точки 
 
 
 
-            try{
-                xStringFormatted = viewX.getText().toString().trim();
-                yStringFormatted = viewY.getText().toString().trim();
+            else{
+                try{
+                    xStringFormatted = viewX.getText().toString().trim();
+                    yStringFormatted = viewY.getText().toString().trim();
 
-                if(!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)){
-                    DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно");
-                }
-                //2.заполняем таблицу
-                //но сначала надо убедиться что третья переменная тоже введена
-                if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
-                if (edit.getText() == null){
-                    DisplayError("Перед расчётом необходимо ввести третью переменную");
-                    return;
-                }
-                variable=edit.getText().toString();
-                if (variable == null || variable.isEmpty()){
-                    DisplayError("Перед расчётом необходимо ввести третью переменную");
-                }
-
-
-                if (xStringFormatted==null||yStringFormatted==null)
-                {
-                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную");
-                    return;
-                }
-                if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
-                    DisplayError("Что-то введено не так!");
-                    return;
-                }
+                    if(!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)){
+                        DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно");
+                    }
+                    //2.заполняем таблицу
+                    //но сначала надо убедиться что третья переменная тоже введена
+                    if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
+                    if (edit.getText() == null){
+                        DisplayError("Перед расчётом необходимо ввести третью переменную");
+                        return;
+                    }
+                    variable=edit.getText().toString();
+                    if (variable == null || variable.isEmpty()){
+                        DisplayError("Перед расчётом необходимо ввести третью переменную");
+                    }
 
 
-                if (variable.isEmpty()){
-                    DisplayError("Перед расчётом необходимо ввести третью переменную");
-                    return;
+                    if (xStringFormatted==null||yStringFormatted==null)
+                    {
+                        DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную");
+                        return;
+                    }
+                    if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
+                        DisplayError("Что-то введено не так!");
+                        return;
+                    }
+
+
+                    if (variable.isEmpty()){
+                        DisplayError("Перед расчётом необходимо ввести третью переменную");
+                        return;
+                    }
+                    if ((!variable.contains("-") && variable.length()!=4) || (variable.contains("-")&&variable.length()!=5)){
+                        DisplayError("Неверный формат третьей переменной");
+                        return;
+                    }
                 }
-                if ((!variable.contains("-") && variable.length()!=4) || (variable.contains("-")&&variable.length()!=5)){
-                    DisplayError("Неверный формат третьей переменной");
-                    return;
+                    catch (Exception e) {
+                                            DisplayError(e.toString());
+                                        }
                 }
 
 
@@ -298,10 +305,8 @@ private  final  String msg = "Для расчёта реперной точки 
                 f23.setText(String.valueOf(result[2][3]));
                 f24.setText(String.valueOf(result[2][4]));
                 f25.setText(String.valueOf(result[2][5]));
-            }
-            catch (Exception e) {
-                DisplayError(e.toString());
-            }
+
+
 
         });
 
@@ -432,66 +437,6 @@ private  final  String msg = "Для расчёта реперной точки 
         endy=null;
     }
 
-
-    private void RememberOut(TableLayout table){
-        //подгружаю предыдущий расчет если он есть
-
-        SharedPreferences prefs = getSharedPreferences("temp_data", MODE_PRIVATE);
-try {
-
-
-    String xString = prefs.getString("x_value", null);
-    String yString = prefs.getString("y_value", null);
-    String variable = prefs.getString("variable", null);
-    String resultArray = prefs.getString("result", null);
-
-    if (xString != null) {
-        viewX.setText(xString);
-    }
-    if (yString != null) {
-        viewY.setText(yString);
-    }
-    if (variable != null) {
-        edit.setText(variable);
-    }
-    if (resultArray != null) {
-        Gson gson = new Gson();
-        String[] result = gson.fromJson(resultArray, String[].class);
-
-        //поля таблицы
-
-        f00.setText(result[0]);
-        f01.setText(result[1]);
-        f02.setText(result[2]);
-        f03.setText(result[3]);
-        f04.setText(result[4]);
-        f05.setText(result[5]);
-        f10.setText(result[6]);
-        f11.setText(result[7]);
-        f12.setText(result[8]);
-        f13.setText(result[9]);
-        f14.setText(result[10]);
-        f15.setText(result[11]);
-        f20.setText(result[12]);
-        f21.setText(result[13]);
-        f22.setText(result[14]);
-        f23.setText(result[15]);
-        f24.setText(result[16]);
-        f25.setText(result[17]);
-        xStringFormatted=xString;
-        yStringFormatted =yString;
-
-
-
-    }
-}catch (Exception e){
-    DisplayError("Не удалось подгрузить данные с последнего расчёта");
-    //DisplayError(e.toString(), errorView);
-
-}
-    }
-
-
     @SuppressLint("UseCompatLoadingForDrawables")
     private void ShowChooseDialog() {
         List<String> options = Arrays.asList(
@@ -502,11 +447,7 @@ try {
                 getString(R.string.r5)
         );
 
-//        // Повторим данные чтобы было как будто бесконечно
-//        List<String> infiniteOptions = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) infiniteOptions.addAll(options);
-//        // Старт с середины
-        //int initialPos = infiniteOptions.size() / 2;
+     //int initialPos = infiniteOptions.size() / 2;
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.start_window, null);
 
@@ -517,29 +458,13 @@ try {
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-//        Runnable scrollRunnable = new Runnable() {
-//            int position = initialPos;
-//
-//            @Override
-//            public void run() {
-//                position++;
-//                recyclerView.scrollBy(0, 2);  // скроллим на 1 пиксель вниз
-//                handler.postDelayed(this, 8);
-//            }
-//        };
+
         RecycleViewAdapter adapter = new RecycleViewAdapter(recyclerView, options, index -> {
             selected = index % options.size(); // по mod вернуть настоящий индекс
             //handler.removeCallbacks(scrollRunnable);
         });
         recyclerView.setAdapter(adapter);
-//
-//
-//        recyclerView.scrollToPosition(initialPos);
-//
-//
 
-        //handler.postDelayed(scrollRunnable, 500); // подождать чуть перед стартом
-        // Кнопка "Continue"
         Button continueBtn = view.findViewById(R.id.continue_button);
         continueBtn.setOnClickListener(v -> {
             if (selected!=-1){
@@ -584,87 +509,18 @@ try {
         dialog.show();
     }
 
-
-
-    private void showRapperDialog() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.rapper_input, null);
-        EditText editX = view.findViewById(R.id.editX);
-        EditText editY = view.findViewById(R.id.editY);
-        Button saveBtn = view.findViewById(R.id.saveBtn);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .create();
-
-        saveBtn.setOnClickListener(v -> {
-            try {
-
-                String x = editX.getText().toString().trim();
-                String y = editY.getText().toString().trim();
-                String startx = viewX.getText().toString();
-                String starty = viewY.getText().toString();
-                try{
-                    Double test = Double.parseDouble(x);
-                    test = Double.parseDouble(y);
-                }
-                catch (Exception e){
-                    DisplayError("Неверный формат введеных координат");
-                    return;
-                }
-
-                dialog.dismiss();
-            }
-            catch (Exception e){
-                DisplayError("Данные введены неккоретно!");
-            }
-        });
-
-        dialog.show();
-    }
-
     private String fillVrlms(String s) {
-        s = s.replace(".", "");
-        s = s.substring(0,4);
-        s = "0"+s;
+        Double d = Double.parseDouble(s);
+        long l = Math.round(d);
+        l *= 10;
+        StringBuilder sBuilder = new StringBuilder(String.valueOf(l));
+        while(sBuilder.length()<4){
+        sBuilder.insert(0, "0");
+        }
+        s = sBuilder.toString();
         return  s.replace(" ", "");
     }
 
-    private void showCoordDialog() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.input_alert, null);
-        EditText editX = view.findViewById(R.id.editX);
-        EditText editY = view.findViewById(R.id.editY);
-        Button saveBtn = view.findViewById(R.id.saveBtn);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .create();
-
-        saveBtn.setOnClickListener(v -> {
-            try {
-
-                String x = editX.getText().toString().trim();
-                String y = editY.getText().toString().trim();
-                if (!CheckFormat(x) || !CheckFormat(y)) {
-                    DisplayError("Неверный формат введеных координат");
-                    viewX.setText("");
-                    viewY.setText("");
-                    return;
-                }
-                xStringFormatted = x;
-                yStringFormatted = y;
-                viewX.setText(xStringFormatted);
-                viewY.setText(yStringFormatted);
-                dialog.dismiss();
-            }
-            catch (Exception e){
-                DisplayError("Данные введены неккоретно!");
-            }
-        });
-
-        dialog.show();
-    }
     private boolean CheckFormat(String coord){
         if (coord.contains("-")){
             return coord.length()==8;

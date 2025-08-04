@@ -16,7 +16,6 @@
         android:theme="@style/Theme.KhakiDark" >
         <activity
             android:name=".ZoomActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
