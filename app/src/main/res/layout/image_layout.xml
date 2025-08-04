@@ -44,14 +44,12 @@
     </LinearLayout>
 
 
-            <com.example.myapplication.ZoomView
+            <com.ortiz.touchview.TouchImageView
                 android:id="@+id/img"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/image"
-                android:adjustViewBounds="true"
-                android:scaleType="matrix"/>
+                android:src="@drawable/image" />
 
 
 </FrameLayout>

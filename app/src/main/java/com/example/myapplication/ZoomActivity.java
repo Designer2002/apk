@@ -15,10 +15,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ortiz.touchview.TouchImageView;
+
 
 public class ZoomActivity extends AppCompatActivity {
-    private ZoomView imageView;
+    private TouchImageView imageView;
     private ScaleGestureDetector scaleGestureDetector;
+    TextView scaleText;
 
     private float scaleFactor = 1f;
     private final float MIN_SCALE = 1f;
@@ -40,8 +43,9 @@ public class ZoomActivity extends AppCompatActivity {
             startActivity(intent);
         });
         Button reset = findViewById(R.id.btnReset);
-        reset.setOnClickListener(v -> imageView.resetZoom());
+        reset.setOnClickListener(v -> {imageView.resetZoom(); updateScaleText();});
 
+        scaleText = findViewById(R.id.scaleText);
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         imageView.setOnTouchListener((v, event) -> {
@@ -49,8 +53,13 @@ public class ZoomActivity extends AppCompatActivity {
             // Return false so ScrollView/HScrollView can also scroll
             return false;
         });
+        imageView.postDelayed(this::updateScaleText, 100);
     }
-
+    private void updateScaleText() {
+        String s = String.valueOf((int)imageView.getCurrentZoom() * 100.0f) + "%";
+        scaleText.setText(s);
+        scaleText.postDelayed(this::updateScaleText, 200); // periodic update
+    }
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {

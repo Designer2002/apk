@@ -17,6 +17,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://chaquo.com/maven")
+        maven(url = uri("https://jitpack.io"))
     }
 }
 
