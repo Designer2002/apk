@@ -221,6 +221,10 @@ public class MainActivity7_62 extends AppCompatActivity {
                 PyObject module = py.getModule("geo");  // имя файла без .py
                 PyObject pyresult = module.callAttr("inverse_geo", startx, starty, endx, endy);
                 String resStr = pyresult.toString();
+                if (resStr.equals("-1")){
+                    DisplayError("Что-то введено не так!", context, this);
+                    return;
+                }
                 resultTMP = resStr.replace("[", "").replace("]", "").split(",");
                 variable = Utils.fillVrlms(resultTMP[1]);
                 viewA.setText(variable);

@@ -1,6 +1,9 @@
 def inverse_geo(x1, y1, x2, y2):
-    p1 = float(x1), float(y1)
-    p2 = float(x2), float(y2)
+    try:
+        p1 = float(x1), float(y1)
+        p2 = float(x2), float(y2)
+    except:
+        return -1
     line = ogz(point_a=p1, point_b=p2)
     length = line[0]
     direction = line[1]
