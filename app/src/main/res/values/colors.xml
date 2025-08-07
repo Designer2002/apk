@@ -16,6 +16,7 @@
     <color name="khaki_dark_grey">#202824</color>
     <color name="grey">#757a73</color>
     <color name="khaki_field">#416B46</color>
+    <color name="a">#0D0F3A11</color>
         <!-- Khaki Colors -->
         <color name="colorPrimaryKhaki">#556B2F</color> <!-- OliveDrab -->
         <color name="colorPrimaryVariantKhaki">#4B5320</color> <!-- Army green -->

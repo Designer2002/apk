@@ -92,15 +92,18 @@ public class StartActivity extends AppCompatActivity {
                 if (selected == 0) {
                     Intent intent = new Intent(StartActivity.this, ZoomActivity.class);
                     startActivity(intent);
+                    finish();
                     return;
                 }
                 if (selected == 3 || selected == 1) {
                     Intent intent = new Intent(StartActivity.this, MainActivity7_62.class);
                     startActivity(intent);
+                    finish();
                     return;
                 } else {
                     Intent intent = new Intent(StartActivity.this, MainActivity6.class);
                     startActivity(intent);
+                    finish();
                     return;
                 }
             }

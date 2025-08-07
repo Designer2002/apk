@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:id="@+id/timeout_dialog"
+        android:background="@drawable/coord_field"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:padding="30dp"
+        android:visibility="gone"
+        android:translationZ="10dp"
+        android:orientation="vertical">
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Время ожидания сигнала GPS"
+        android:textSize="24sp"
+        android:textColor="@color/khaki_light"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeout_title"
+        android:textSize="14sp"
+        android:textColor="@color/khaki_accent"/>
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/slider"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="150dp"
+        android:id="@+id/savetimeout"
+        android:layout_height="50dp"
+        android:text="Сохранить"
+        android:layout_gravity="center"/>
+</LinearLayout>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -52,7 +92,8 @@
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_marginStart="-12dp">
 
                 <TextView
                     android:text="@string/gps_title"
@@ -80,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginStart="16dp">
+                android:layout_marginStart="0dp">
 
                 <TextView
                     android:text="@string/gps2_title"
@@ -106,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="2dp">
 
                 <TextView
                     android:text="@string/clear_text"
@@ -125,6 +166,33 @@
                     android:src="@drawable/clear"
                     android:scaleType="centerInside"
                     android:contentDescription="@string/clear_text" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="13dp">
+
+                <TextView
+                    android:text="@string/timeout"
+                    android:textColor="@color/khaki_text_primary"
+                    android:gravity="center"
+
+                    android:layout_width="wrap_content" android:layout_height="48dp"/>
+
+                <ImageButton
+                    android:padding="12dp"
+                    android:id="@+id/timeout_button"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/gps_button"
+                    android:src="@drawable/clock"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/desc_button_icon" />
             </LinearLayout>
         </LinearLayout>
         <TextView
@@ -429,3 +497,4 @@ android:layout_marginStart="5dp"
 <!--            android:textColor="@color/white"/>-->
     </LinearLayout>
 </ScrollView>
+</FrameLayout>

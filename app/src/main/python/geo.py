@@ -22,7 +22,7 @@ def ogz(point_a,point_b):
 
     direction = math.degrees(math.atan2(delta_y, delta_x))
     true_direction = true_angle(direction, 360)
-    return (length, true_direction)
+    return (round(length, 4), true_direction)
 
 def true_angle(angle: float, max_value: int) -> float:
     """
@@ -39,5 +39,3 @@ def true_angle(angle: float, max_value: int) -> float:
         return angle + max_value
     else:
         return angle
-    
-print(inverse_geo(111, 567, 100, 400))

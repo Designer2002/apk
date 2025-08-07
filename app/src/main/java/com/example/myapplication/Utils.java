@@ -3,10 +3,14 @@ package com.example.myapplication;
 import static android.content.Context.MODE_PRIVATE;
 import static android.provider.Settings.Global.getString;
 
+
+import static com.example.myapplication.SeekerInterop.createSegment;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
@@ -17,7 +21,22 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.compose.ui.platform.ComposeView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.lifecycle.ViewTreeLifecycleOwner;
+import androidx.lifecycle.ViewTreeViewModelStoreOwner;
+import androidx.savedstate.SavedStateRegistryOwner;
+import androidx.savedstate.ViewTreeSavedStateRegistryOwner;
+
 import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.List;
+
+import dev.vivvvek.seeker.Segment;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class Utils {
     public static String FormatCoord(String coordinate) {
@@ -178,6 +197,72 @@ public class Utils {
 
 
     }
+
+
+
+//    static void DisplaySlider(Float timeout, Context context, Activity activity) {
+//        LayoutInflater inflater = LayoutInflater.from(context);
+//        View view = inflater.inflate(R.layout.timeout_layout, null);
+//
+//        // ВАЖНО: установим LifecycleOwner на корневую вьюшку
+//        ViewTreeLifecycleOwner.set(view, (LifecycleOwner) activity);
+//        ViewTreeViewModelStoreOwner.set(view, (ViewModelStoreOwner) activity);
+//        ViewTreeSavedStateRegistryOwner.set(view, (SavedStateRegistryOwner) activity);
+//
+//        AlertDialog dialog = new AlertDialog.Builder(context)
+//                .setView(view)
+//                .create();
+//
+//        Utils.LockOrient(dialog, activity);
+//
+//        ComposeView cv = view.findViewById(R.id.seeker);
+//
+//
+//
+//        Button save = view.findViewById(R.id.savetimeout);
+//        save.setOnClickListener(v -> dialog.dismiss());
+//
+//        dialog.setView(view);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.setCancelable(false);
+//        dialog.show();
+//    }
+
+//    static void DisplayTimeout(Context c, int layoutId){
+//        LayoutInflater inflater = LayoutInflater.from(c);
+//        View contextView = inflater.inflate(layoutId, null);
+//        View view = contextView.findViewById(R.id.timeout_dialog);
+//        view.setVisibility(View.VISIBLE);
+//        view.bringToFront();
+//        view.invalidate();
+//        ComposeView composeView = contextView.findViewById(R.id.slider);
+//        List<Segment> segments = Arrays.asList(
+//                createSegment("Очень хороший приём (2-4 секунды)", 2.0f),
+//                createSegment("Хороший приём (4-6 секунд)", 4.0f),
+//                createSegment("Обычный приём (6-10 секунд)", 6.0f),
+//                createSegment("Слабый приём (10-15 секунд)", 10.0f),
+//                createSegment("Очень слабый приём (15-30 секунд)", 15.0f)
+//        );
+//
+//        SeekerInterop.setSeekerContent(
+//                c,
+//                composeView,
+//                2,
+//                30,
+//                segments,
+//                new Function1<Float, Unit>() {
+//                    @Override
+//                    public Unit invoke(Float newValue) {
+//                        return Unit.INSTANCE;
+//                    }
+//                }
+//        );
+//        Button okBtn = contextView.findViewById(R.id.savetimeout);
+//        okBtn.setOnClickListener(v -> {
+//            view.setVisibility(View.GONE);
+//        });
+//    }
+
     public static void LockOrient(Dialog dialog,Activity activity){
         int originalOrientation = activity.getRequestedOrientation();
 
@@ -222,9 +307,7 @@ public class Utils {
         }
         return -1;
     }
-    public static String ConvertToSystem(String angle){
-        return angle.substring(0,2)+"-"+angle.substring(2,4);
-    }
+
 
 
 }

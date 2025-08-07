@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.SeekerInterop.createSegment;
 import static com.example.myapplication.StartActivity.selected;
 import static com.example.myapplication.Utils.CheckFormat;
 import static com.example.myapplication.Utils.DisplayError;
@@ -7,12 +8,18 @@ import static com.example.myapplication.Utils.FormatCoord;
 import static com.example.myapplication.Utils.ShowSpinnerDialog;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.compose.ui.platform.ComposeView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,8 +41,20 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.CancellationTokenSource;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import dev.vivvvek.seeker.Segment;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivity6 extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
@@ -44,14 +65,70 @@ public class MainActivity6 extends AppCompatActivity {
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted, x2StringFormatted;
     private static String variable;
-    private static  String xStringFormatted, y2StringFormatted, endx, endy;
-    private TextView f00,f01,f02,f03,f04,f05,f10,f11,f12,f13,f14,f15,f20,f21,f22,f23,f24,f25;
+    private static String xStringFormatted, y2StringFormatted, endx, endy;
+    private TextView f00, f01, f02, f03, f04, f05, f10, f11, f12, f13, f14, f15, f20, f21, f22, f23, f24, f25;
     private Button calcButton;
     private ImageButton GPSbutton;
     private EditText edit;
     private EditText viewX;
     private TableLayout table;
-    private  EditText viewY;
+    private ImageButton timeout;
+
+    private float timeoutVal = -1;
+    private EditText viewY;
+
+    private void DisplayTimeout() {
+        View view = findViewById(R.id.timeout_dialog);
+        view.setVisibility(View.VISIBLE);
+        view.bringToFront();
+        view.invalidate();
+        ComposeView composeView = findViewById(R.id.slider);
+        List<Segment> segments = Arrays.asList(
+                createSegment("Очень хороший приём (2-4 секунды)", 2.0f),
+                createSegment("Хороший приём (4-6 секунд)", 4.0f),
+                createSegment("Обычный приём (6-10 секунд)", 6.0f),
+                createSegment("Слабый приём (10-15 секунд)", 10.0f),
+                createSegment("Очень слабый приём (15-30 секунд)", 15.0f)
+        );
+        AtomicReference<Float> selectedTimeout = new AtomicReference<>(2.0f); // стартовое значение
+
+        SeekerInterop.setSeekerContent(
+                MainActivity6.this,
+                composeView,
+                timeoutVal!=-1?timeoutVal:3.5f,
+                30,
+                segments,
+                new Function1<Float, Unit>() {
+                    @Override
+                    public Unit invoke(Float newValue) {
+                        selectedTimeout.set(newValue);
+                        return Unit.INSTANCE;
+                    }
+                }
+        );
+        Button okBtn = findViewById(R.id.savetimeout);
+        okBtn.setOnClickListener(v -> {
+            SharedPreferences prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            prefs.edit().putFloat("gps_timeout", selectedTimeout.get()).apply();
+            view.setVisibility(View.GONE);
+            timeoutVal = selectedTimeout.get();
+        });
+
+    }
+
+    void CheckTimeout() {
+
+        SharedPreferences prefs = context.getSharedPreferences("settings", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.remove("gps_timeout");
+//        editor.apply();
+        float timeoutF = prefs.getFloat("gps_timeout", -1.0f);
+        if (timeoutF == -1.0f) {
+            DisplayTimeout();
+        }
+        else timeoutVal = timeoutF;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +141,17 @@ public class MainActivity6 extends AppCompatActivity {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this)); // this — это Activity context
         }
+        CheckTimeout();
         calcButton = findViewById(R.id.calx_btn);
         GPSbutton = findViewById(R.id.gps_button);
         edit = findViewById(R.id.edit_var);
         viewX = findViewById(R.id.x);
         viewY = findViewById(R.id.y);
 
+        timeout = findViewById(R.id.timeout_button);
+        timeout.setOnClickListener(v -> {
+            DisplayTimeout();
+        });
         table = findViewById(R.id.khaki_table);
 
         //поля таблицы
@@ -103,76 +185,76 @@ public class MainActivity6 extends AppCompatActivity {
             }
         });
 
-
+        ImageButton clearBtn = findViewById(R.id.clear_button);
+        clearBtn.setOnClickListener(v -> ClearData());
         //на главный экран
         ImageButton home = findViewById(R.id.home_button);
         home.setOnClickListener(v -> {
             ClearData();
             Intent intent = new Intent(MainActivity6.this, StartActivity.class);
             startActivity(intent);
+            finish();
         });
+
 
         GPSbutton.setOnClickListener(v -> getGPS());
 
         calcButton.setOnClickListener(v -> {
 
 
-                try{
-                    xStringFormatted = viewX.getText().toString().trim();
-                    yStringFormatted = viewY.getText().toString().trim();
+            try {
+                xStringFormatted = viewX.getText().toString().trim();
+                yStringFormatted = viewY.getText().toString().trim();
 
-                    if(!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)){
-                        DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно",context, this);
-                        return;
-                    }
-                    //2.заполняем таблицу
-                    //но сначала надо убедиться что третья переменная тоже введена
-                    if (variable == null||variable.isEmpty()) variable = String.valueOf(edit.getText());
-                    if (edit.getText() == null){
-                        DisplayError("Перед расчётом необходимо ввести третью переменную", context, this);
-                        return;
-                    }
-                    variable=edit.getText().toString();
-                    if (variable == null || variable.isEmpty()){
-                        DisplayError("Перед расчётом необходимо ввести третью переменную", context, this);
+                if (!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)) {
+                    DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно", context, this);
                     return;
-                    }
-
-
-                    if (xStringFormatted==null||yStringFormatted==null)
-                    {
-                        DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную",context, this);
-                        return;
-                    }
-                    if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()){
-                        DisplayError("Что-то введено не так!",context, this);
-                        return;
-                    }
-
-
-                    if (variable.isEmpty()){
-                        DisplayError("Перед расчётом необходимо ввести третью переменную",context,this);
-                        return;
-                    }
-                    if ((!variable.contains("-") && variable.length()!=4) || (variable.contains("-")&&variable.length()!=5)){
-                        DisplayError("Неверный формат третьей переменной",context,this);
-                        return;
-                    }
                 }
-                catch (Exception e) {
-                    DisplayError(e.toString(),context,this);
+                //2.заполняем таблицу
+                //но сначала надо убедиться что третья переменная тоже введена
+                if (variable == null || variable.isEmpty())
+                    variable = String.valueOf(edit.getText());
+                if (edit.getText() == null) {
+                    DisplayError("Перед расчётом необходимо ввести третью переменную", context, this);
+                    return;
+                }
+                variable = edit.getText().toString();
+                if (variable == null || variable.isEmpty()) {
+                    DisplayError("Перед расчётом необходимо ввести третью переменную", context, this);
                     return;
                 }
 
+
+                if (xStringFormatted == null || yStringFormatted == null) {
+                    DisplayError("Перед расчётом необходимо определить местоположение при помощи зеленой кнопки в углу или ввести координаты вручную", context, this);
+                    return;
+                }
+                if (xStringFormatted.isEmpty() || yStringFormatted.isEmpty()) {
+                    DisplayError("Что-то введено не так!", context, this);
+                    return;
+                }
+
+
+                if (variable.isEmpty()) {
+                    DisplayError("Перед расчётом необходимо ввести третью переменную", context, this);
+                    return;
+                }
+                if ((!variable.contains("-") && variable.length() != 4) || (variable.contains("-") && variable.length() != 5)) {
+                    DisplayError("Неверный формат третьей переменной", context, this);
+                    return;
+                }
+            } catch (Exception e) {
+                DisplayError(e.toString(), context, this);
+                return;
+            }
 
 
             //сделаем таблицу а потом фигачим в ту что на телефоне
             Integer[][] result = new Integer[3][6];
             try {
                 result = Formula.calculate(xStringFormatted, yStringFormatted, variable, Utils.getNumber(StartActivity.selected));
-            }
-            catch (Exception e) {
-                DisplayError(e.toString(),context,this);
+            } catch (Exception e) {
+                DisplayError(e.toString(), context, this);
             }
             result = Formula.calculate(xStringFormatted, yStringFormatted, variable, Utils.getNumber(selected));
             f00.setText(String.valueOf(result[0][0]));
@@ -195,16 +277,17 @@ public class MainActivity6 extends AppCompatActivity {
             f25.setText(String.valueOf(result[2][5]));
 
 
-
         });
 
     }
+
     @Override
     protected void onDestroy() {
-        Utils.RememberIn(this, context, table, this.findViewById(android.R.id.content), R.id.x,R.id.y, R.id.edit_var);
+        Utils.RememberIn(this, context, table, this.findViewById(android.R.id.content), R.id.x, R.id.y, R.id.edit_var);
         super.onDestroy();
 
     }
+
     private void ClearData() {
         // Очистка координат и переменной
         edit.setText("");
@@ -236,73 +319,103 @@ public class MainActivity6 extends AppCompatActivity {
         variable = null;
         xStringFormatted = null;
         yStringFormatted = null;
-        endx=null;
-        endy=null;
+        endx = null;
+        endy = null;
     }
+
     private void getGPS() {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        final boolean[] ready = new boolean[]{false};
-        ShowSpinnerDialog(ready,context, this);
-        // не дали доступ если
+        Log.d("GPS", "getGPS called");
+
+        // Проверка разрешения
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "GPS не дали, работать не будет", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Проверка, включен ли GPS
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "Без GPS работать не будет. Необходимо включить его", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Без GPS работать не будет. Включите его", Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
             return;
         }
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
-                        lat = location.getLatitude();
-                        lon = location.getLongitude();
-                        att = location.getAltitude();
-                    }
 
-                    // движуха
-                    //1.у нас есть широта долгота высота но они в системе координат WSG-84
-                    //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
-                    String[] result = new String[2];
-                    try {
-                        Python py = Python.getInstance();
+        // Запрос с высокой точностью
+        LocationRequest request = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
+                .setMinUpdateIntervalMillis(500)
+                .build();
 
-                        //люто питоним!!
-                        PyObject module = py.getModule("convert");  // имя файла без .py
-                        //мы включили жпс но он вставил то что мы захрадкодили а не то что реальное
-                        PyObject pyresult = module.callAttr("convert", lat, lon);
-                        String resStr = pyresult.toString();
-                        result = resStr.replace("[", "").replace("]", "").split(",");
-                    } catch (Exception e) {
-                        DisplayError(e.toString(),context,this);
-                        return;
-                    }
+        FusedLocationProviderClient fusedClient = LocationServices.getFusedLocationProviderClient(this);
+        final boolean[] ready = {false};
+        ShowSpinnerDialog(ready, context, MainActivity6.this);
+        final Location[] location = {null};
+        // Создаем колбэк
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                Log.d("GPS", "onLocationResult called");
+
+                location[0] = locationResult.getLastLocation();
+
+                if (location[0] != null) {
+                    lat = location[0].getLatitude();
+                    lon = location[0].getLongitude();
+                    att = location[0].getAltitude();
+                }
+
+                // движуха
+                //1.у нас есть широта долгота высота но они в системе координат WSG-84
+                //это пендосы враг народа и вообще кринж надо в СК-42 перевести первым делом
+                String[] result = new String[2];
+                try {
+                    Python py = Python.getInstance();
+
+                    //люто питоним!!
+                    PyObject module = py.getModule("convert");  // имя файла без .py
+                    //мы включили жпс но он вставил то что мы захрадкодили а не то что реальное
+                    PyObject pyresult = module.callAttr("convert", lat, lon);
+                    String resStr = pyresult.toString();
+                    result = resStr.replace("[", "").replace("]", "").split(",");
+                } catch (Exception e) {
+                    DisplayError(e.toString(), context, MainActivity6.this);
+                    return;
+                }
 
 
 
-                    double x = Double.parseDouble(result[0]);
-                    double y = Double.parseDouble(result[1]);
-                    String xString = String.valueOf(x);
-                    String yString = String.valueOf(y);
+                double x = Double.parseDouble(result[0]);
+                double y = Double.parseDouble(result[1]);
+                String xString = String.valueOf(x);
+                String yString = String.valueOf(y);
 
 
 
-                        xStringFormatted = FormatCoord(xString);
-                        yStringFormatted = FormatCoord(yString);
-                        viewX.setText(xStringFormatted);
-                        viewY.setText(yStringFormatted);
+                    xStringFormatted = FormatCoord(xString);
+                    yStringFormatted = FormatCoord(yString);
+                    viewX.setText(xStringFormatted);
+                    viewY.setText(yStringFormatted);
 
 
 
-                    ready[0] = true;
-                });
+                ready[0] = true;
 
+                // Остановить GPS при получении координат
+                fusedClient.removeLocationUpdates(this);
+            }
+
+        };
+
+        // Таймер остановки через timeoutVal секунд
+        Handler timeoutHandler = new Handler(Looper.getMainLooper());
+        timeoutHandler.postDelayed(() -> {
+            Log.d("GPS", "Timeout reached, stopping GPS");
+            ready[0] = true;
+            if(location[0] == null)DisplayError("За указанное время не удалось определить местоположение!", context, MainActivity6.this);
+            fusedClient.removeLocationUpdates(locationCallback);
+        }, (long)timeoutVal * 1000);
+
+        // Запускаем получение координат
+        fusedClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
     }
-
-
 
 }

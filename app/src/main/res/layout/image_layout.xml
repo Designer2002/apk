@@ -9,38 +9,39 @@
     <!-- Top bar -->
     <LinearLayout
         android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:layout_gravity="top"
         android:background="@color/backgroundKhaki"
         android:paddingHorizontal="16dp"
         android:layout_marginTop="50dp"
         android:visibility="visible"
         android:elevation="4dp">
 
-       <ImageButton
-           android:layout_width="54dp"
-           android:layout_height="54dp"
-           android:id="@+id/back"
-           android:scaleType="centerInside"
-           android:background="@drawable/gps_button"
-           android:src="@drawable/home"/>
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <TextView
+               android:text="@string/back_text"
+               android:textColor="@color/khaki_text_primary"
+               android:gravity="center"
 
-        <TextView
-            android:id="@+id/scaleText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="100%"
-            android:gravity="center"
-            android:textColor="#FFFFFF" />
+               android:layout_width="100dp" android:layout_height="28dp"/>
+           <ImageButton
+               android:layout_width="54dp"
+               android:layout_height="54dp"
+               android:id="@+id/back"
+               android:padding="15dp"
+               android:layout_gravity="center"
+               android:scaleType="centerInside"
+               android:background="@drawable/gps_button"
+               android:src="@drawable/back"/>
 
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="150dp"
-            android:layout_height="84dp"
-            android:text="Вернуть начальный размер" />
+       </LinearLayout>
+
     </LinearLayout>
 
 
