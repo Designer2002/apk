@@ -39,6 +39,8 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class Utils {
+
+    public static float timeoutVal = -1;
     public static String FormatCoord(String coordinate) {
         double number = Double.parseDouble(coordinate);
         return String.valueOf(Math.round(number)).substring(0, 7);
@@ -297,7 +299,6 @@ public class Utils {
             case 1:
                 return 7;
             case 2:
-                return 6;
             case 3:
                 return 6;
             case 4:

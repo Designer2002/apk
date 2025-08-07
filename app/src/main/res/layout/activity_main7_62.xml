@@ -435,7 +435,7 @@ android:layout_marginStart="5dp"
                 android:background="@color/khaki_dark_bg"
                 android:paddingTop="10dp">
 
-                <TableRow android:background="@color/khaki_primary">
+                <TableRow android:background="@color/black">
                     <TextView android:text=""  android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                     <TextView android:text="@string/table_priznak" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                     <TextView android:text="@string/tablebdu10" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
@@ -445,7 +445,7 @@ android:layout_marginStart="5dp"
                     <TextView android:text="@string/table3" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
-                <TableRow android:background="@color/khaki_button">
+                <TableRow android:background="@color/black">
                     <TextView android:text="X" style="@style/TableCellBook" android:background="@drawable/table_cell_border"/>
                     <TextView android:id="@+id/f00" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                     <TextView android:id="@+id/f01" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
@@ -455,7 +455,7 @@ android:layout_marginStart="5dp"
                     <TextView android:id="@+id/f05" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
-                <TableRow android:background="@color/khaki_secondary">
+                <TableRow android:background="@color/black">
                     <TextView  android:background="@drawable/table_cell_border" android:text="Y" style="@style/TableCellBook"/>
                     <TextView android:id="@+id/f10" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                     <TextView android:id="@+id/f11" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
@@ -465,7 +465,7 @@ android:layout_marginStart="5dp"
                     <TextView android:id="@+id/f15" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                 </TableRow>
 
-                <TableRow android:background="@color/khaki_button_pressed">
+                <TableRow android:background="@color/black">
                     <TextView android:background="@drawable/table_cell_border" android:text="B" style="@style/TableCellBook"/>
                     <TextView android:id="@+id/f20" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>
                     <TextView android:id="@+id/f21" android:text="" android:background="@drawable/table_cell_border" style="@style/TableCellBook"/>

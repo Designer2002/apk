@@ -46,7 +46,7 @@ fun SeekerContent(
     Seeker(
         value = value,
         readAheadValue = readAheadValue,
-        range = 2f..30f,
+        range = 4f..30f,
         segments = segments,
         state = state,
         interactionSource = interactionSource,

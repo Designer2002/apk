@@ -32,8 +32,7 @@
         <activity
             android:name=".StartActivity"
             android:configChanges="screenSize|screenLayout"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

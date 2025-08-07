@@ -6,6 +6,7 @@ import static com.example.myapplication.Utils.CheckFormat;
 import static com.example.myapplication.Utils.DisplayError;
 import static com.example.myapplication.Utils.FormatCoord;
 import static com.example.myapplication.Utils.ShowSpinnerDialog;
+import static com.example.myapplication.Utils.timeoutVal;
 
 import android.Manifest;
 import android.content.Context;
@@ -61,7 +62,6 @@ public class MainActivity7_62 extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
     private static double lat;
     private static double lon;
-    private float timeoutVal = -1;
     private static double att;
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted, x2StringFormatted;
@@ -82,21 +82,24 @@ public class MainActivity7_62 extends AppCompatActivity {
     private void DisplayTimeout() {
         View view = findViewById(R.id.timeout_dialog);
         view.setVisibility(View.VISIBLE);
+        view.setClickable(true);
+        view.setFocusable(true);
+        view.requestFocus();
         view.bringToFront();
         view.invalidate();
         ComposeView composeView = findViewById(R.id.slider);
         List<Segment> segments = Arrays.asList(
-                createSegment("Очень хороший приём (2-4 секунды)", 2.0f),
-                createSegment("Хороший приём (4-6 секунд)", 4.0f),
-                createSegment("Обычный приём (6-10 секунд)", 6.0f),
-                createSegment("Слабый приём (10-15 секунд)", 10.0f),
-                createSegment("Очень слабый приём (15-30 секунд)", 15.0f)
+                createSegment("Очень хороший приём (4-6 секунд)", 4.0f),
+                createSegment("Хороший приём (6-10 секунд)", 6.0f),
+                createSegment("Обычный приём (10-15 секунд)", 10.0f),
+                createSegment("Слабый приём (15-20 секунд)", 15.0f),
+                createSegment("Очень слабый приём (20-30 секунд)", 20.0f)
         );
-        AtomicReference<Float> selectedTimeout = new AtomicReference<>(2.0f); // стартовое значение
+        AtomicReference<Float> selectedTimeout = new AtomicReference<>(7.0f); // стартовое значение
         SeekerInterop.setSeekerContent(
                 MainActivity7_62.this,
                 composeView,
-                timeoutVal != -1 ? timeoutVal : 3.5f,
+                timeoutVal != -1 ? timeoutVal : 7f,
                 30,
                 segments,
                 new Function1<Float, Unit>() {
@@ -107,11 +110,14 @@ public class MainActivity7_62 extends AppCompatActivity {
                     }
                 }
         );
+        Log.d("TIMEOUT", String.valueOf(timeoutVal));
         Button okBtn = findViewById(R.id.savetimeout);
         okBtn.setOnClickListener(v -> {
             SharedPreferences prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
             prefs.edit().putFloat("gps_timeout", selectedTimeout.get()).apply();
             view.setVisibility(View.GONE);
+            view.setClickable(false);
+            view.setFocusable(false);
             timeoutVal =  selectedTimeout.get();
         });
 
@@ -135,6 +141,13 @@ public class MainActivity7_62 extends AppCompatActivity {
         setContentView(R.layout.activity_main7_62);
         TextView t = findViewById(R.id.title_text);
         t.setText(Utils.getSelectedText(context, selected));
+
+        if (selected == -1){
+            Intent intent = new Intent(MainActivity7_62.this, StartActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_LOCATION);

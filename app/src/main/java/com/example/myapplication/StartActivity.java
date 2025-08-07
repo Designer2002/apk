@@ -43,7 +43,6 @@ import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
     public static int selected = -1;
-    private Context context;
     private Button con;
     private RecyclerView recyclerView;
     @SuppressLint({"ResourceAsColor", "ClickableViewAccessibility"})
@@ -57,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
         //switchTheme(2);
         setContentView(R.layout.start_window);
         con = findViewById(R.id.continue_button);
-        context = StartActivity.this;
+
 
 
         recyclerView = findViewById(R.id.recycler);

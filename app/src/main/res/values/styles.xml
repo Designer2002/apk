@@ -13,13 +13,13 @@
         <item name="android:textColor">@color/khaki_text_primary</item>
     </style>
     <style name="TableCell">
-        <item name="android:textColor">@color/khaki_text_primary</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">8dp</item>
         <item name="android:textSize">14sp</item>
     </style>
     <style name="TableCellBook">
-        <item name="android:textColor">@color/khaki_text_primary</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingBottom">15dp</item>
         <item name="android:paddingTop">15dp</item>
