@@ -159,7 +159,7 @@ public class Utils {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(view)
                 .create();
-        Utils.LockOrient(dialog, a);
+        //Utils.LockOrient(dialog, a);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
@@ -188,7 +188,7 @@ public class Utils {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(view)
                 .create();
-        Utils.LockOrient(dialog, activity);
+        //Utils.LockOrient(dialog, activity);
         TextView error = view.findViewById(R.id.error_message);
         error.setText(string);
         Button close = view.findViewById(R.id.close);

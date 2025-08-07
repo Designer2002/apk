@@ -219,30 +219,39 @@
             android:layout_gravity="center"
             android:text="@string/title_vvod"/>
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="55dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_marginStart="60dp"
             >
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="X"
                 android:textColor="@color/colorOnSecondaryKhaki"/>
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="Y"
+                android:textColor="@color/colorOnSecondaryKhaki"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text=""
                 android:textColor="@color/colorOnSecondaryKhaki"/>
         </LinearLayout>
         <!-- Coordinates Input -->
         <LinearLayout
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="start"
-            android:padding="10dp"
+            android:gravity="center"
+            android:padding="15dp"
             android:layout_marginTop="0dp"
             android:layout_marginStart="-5dp">
             <TextView
@@ -255,7 +264,8 @@
             <EditText
                 android:id="@+id/x"
                 android:inputType="numberSigned"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:textColorHint="@color/khaki_input"
                 android:gravity="center"
                 android:layout_height="50dp"
@@ -266,11 +276,12 @@
             <EditText
                 android:id="@+id/y"
                 android:inputType="numberSigned"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:textColorHint="@color/khaki_input"
                 android:gravity="center"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="7dp"
                 android:layout_height="50dp"
                 android:padding="5dp"
                 android:background="@drawable/coord_field"
@@ -283,9 +294,9 @@
             <EditText
                 android:visibility="visible"
                 android:id="@+id/edit_var"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_weight="0"
+                android:layout_weight="1"
                 android:background="@drawable/input_button"
                 android:hint="@string/variable"
                 android:inputType="numberSigned"
@@ -296,20 +307,6 @@
 
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/rapper_btn"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="@string/dot"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/khaki_dark_bg"
-            android:backgroundTint="@color/khaki_accent"
-            android:padding="12dp"
-            android:textSize="10sp"
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:layout_marginStart="12dp" />
         <Button
             android:id="@+id/calx_btn"
             android:layout_width="wrap_content"
@@ -326,7 +323,7 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp">
+            android:padding="10dp">
 
             <TableLayout
                 android:id="@+id/khaki_table"
@@ -378,68 +375,6 @@
             </TableLayout>
         </HorizontalScrollView>
 
-
-    <LinearLayout
-        android:layout_width="380dp"
-        android:id="@+id/geo_ext"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start"
-        android:padding="10dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginStart="-10dp">
-        <TextView
-            android:layout_width="45dp"
-            android:layout_height="wrap_content"
-            android:text="@string/geo"
-            android:layout_gravity="center"
-            android:padding="1dp"
-            android:layout_marginEnd="3dp"
-            android:textSize="14sp"
-            android:textColor="@color/colorOnPrimaryKhaki" />
-        <TextView
-            android:id="@+id/angle"
-            android:layout_width="100dp"
-            android:gravity="center"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:background="@drawable/geo_field"
-            android:textColor="@color/khaki_text_primary" />
-
-        <TextView
-            android:id="@+id/s"
-            android:padding="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_width="100dp"
-            android:gravity="center"
-            android:layout_height="50dp"
-            android:background="@drawable/geo_field"
-            android:textColor="@color/khaki_text_primary"
-            />
-    </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            <CheckBox-->
-<!--                android:id="@+id/load_checkbox"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginTop="10dp"/>-->
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="@color/khaki_accent"-->
-<!--                android:text="@string/checkbox_text"/>-->
-
-<!--        </LinearLayout>-->
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/test"-->
-<!--            android:textColor="@color/white"/>-->
-    </LinearLayout>
+</LinearLayout>
 </ScrollView>
 </FrameLayout>

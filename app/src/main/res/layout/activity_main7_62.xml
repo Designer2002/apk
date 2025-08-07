@@ -56,10 +56,12 @@
         <!-- Buttons -->
 
         <LinearLayout
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:layout_gravity="center"
             android:layout_marginTop="6dp">
             <LinearLayout
@@ -218,30 +220,33 @@
             android:layout_gravity="center"
             android:text="@string/title_vvod"/>
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="-5dp"
             android:layout_marginStart="55dp"
             >
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="X"
                 android:textColor="@color/colorOnSecondaryKhaki"/>
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="Y"
                 android:textColor="@color/colorOnSecondaryKhaki"/>
         </LinearLayout>
         <!-- Coordinates Input -->
         <LinearLayout
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="start"
-            android:padding="10dp"
+            android:gravity="center"
+            android:padding="15dp"
             android:layout_marginTop="0dp"
             android:layout_marginStart="-10dp">
             <TextView
@@ -286,12 +291,14 @@
         <LinearLayout
             android:id="@+id/rapper_ext"
             android:visibility="visible"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="start"
-            android:padding="10dp"
-            android:layout_marginTop="-10dp"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginStart="-10dp">
             <TextView
                 android:layout_width="45dp"
@@ -329,32 +336,43 @@ android:layout_marginStart="5dp"
                 />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="-1dp"
-            android:layout_marginStart="55dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginStart="35dp"
             >
             <TextView
-                android:layout_width="98dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Угол\n(десятичные градусы)"
                 android:textSize="11sp"
+                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:textColor="@color/colorOnSecondaryKhaki"/>
             <TextView
-                android:layout_width="98dp"
+                android:layout_width="match_parent"
                 android:textSize="11sp"
+                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
                 android:layout_height="match_parent"
                 android:text="Угол\n(деления угломера)"
                 android:textColor="@color/colorOnSecondaryKhaki"/>
             <TextView
-                android:layout_width="98dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Дальность"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:layout_weight="1"
                 android:textSize="11sp"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -363,11 +381,11 @@ android:layout_marginStart="5dp"
         <LinearLayout
             android:id="@+id/vmrls_ext"
             android:visibility="visible"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="start"
-            android:padding="10dp"
+            android:padding="15dp"
             android:layout_marginTop="-10dp"
             android:layout_marginStart="-10dp">
             <TextView
@@ -380,7 +398,8 @@ android:layout_marginStart="5dp"
                 android:textColor="@color/colorOnSecondaryKhaki" />
             <TextView
                 android:id="@+id/angle"
-                android:layout_width="98dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:layout_height="50dp"
                 android:padding="5dp"
@@ -390,9 +409,10 @@ android:layout_marginStart="5dp"
             <TextView
                 android:id="@+id/angle2"
                 android:padding="5dp"
+                android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:layout_width="98dp"
+                android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="50dp"
                 android:background="@drawable/geo_field"
@@ -401,7 +421,8 @@ android:layout_marginStart="5dp"
             <TextView
                 android:id="@+id/s"
                 android:padding="5dp"
-                android:layout_width="98dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="50dp"
                 android:background="@drawable/geo_field"
@@ -425,7 +446,7 @@ android:layout_marginStart="5dp"
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp">
+            android:padding="10dp">
 
             <TableLayout
                 android:id="@+id/khaki_table"
