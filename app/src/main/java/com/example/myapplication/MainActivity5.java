@@ -58,12 +58,12 @@ import dev.vivvvek.seeker.Segment;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class MainActivity6 extends AppCompatActivity {
+public class MainActivity5 extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
     private static double lat;
     private static double lon;
     private static double att;
-    private final Context context = MainActivity6.this;
+    private final Context context = MainActivity5.this;
     private int position = Integer.MAX_VALUE / 2;
     private static String yStringFormatted, x2StringFormatted;
     private static String variable;
@@ -95,7 +95,7 @@ public class MainActivity6 extends AppCompatActivity {
         );
         AtomicReference<Float> selectedTimeout = new AtomicReference<>(7.0f); // стартовое значение
         SeekerInterop.setSeekerContent(
-                MainActivity6.this,
+                MainActivity5.this,
                 composeView,
                 timeoutVal != -1 ? timeoutVal : 7f,
                 30,
@@ -139,7 +139,7 @@ public class MainActivity6 extends AppCompatActivity {
         setContentView(R.layout.activity_main6);
 
         if (selected == -1){
-            Intent intent = new Intent(MainActivity6.this, StartActivity.class);
+            Intent intent = new Intent(MainActivity5.this, StartActivity.class);
             startActivity(intent);
             finish();
         }
@@ -202,7 +202,7 @@ public class MainActivity6 extends AppCompatActivity {
         ImageButton home = findViewById(R.id.home_button);
         home.setOnClickListener(v -> {
             ClearData();
-            Intent intent = new Intent(MainActivity6.this, StartActivity.class);
+            Intent intent = new Intent(MainActivity5.this, StartActivity.class);
             startActivity(intent);
             finish();
         });
@@ -358,7 +358,7 @@ public class MainActivity6 extends AppCompatActivity {
 
         FusedLocationProviderClient fusedClient = LocationServices.getFusedLocationProviderClient(this);
         final boolean[] ready = {false};
-        ShowSpinnerDialog(ready, context, MainActivity6.this);
+        ShowSpinnerDialog(ready, context, MainActivity5.this);
         final Location[] location = {null};
         // Создаем колбэк
         LocationCallback locationCallback = new LocationCallback() {
@@ -388,7 +388,7 @@ public class MainActivity6 extends AppCompatActivity {
                     String resStr = pyresult.toString();
                     result = resStr.replace("[", "").replace("]", "").split(",");
                 } catch (Exception e) {
-                    DisplayError(e.toString(), context, MainActivity6.this);
+                    DisplayError(e.toString(), context, MainActivity5.this);
                     return;
                 }
 
@@ -401,10 +401,10 @@ public class MainActivity6 extends AppCompatActivity {
 
 
 
-                    xStringFormatted = FormatCoord(xString);
-                    yStringFormatted = FormatCoord(yString);
-                    viewX.setText(xStringFormatted);
-                    viewY.setText(yStringFormatted);
+                xStringFormatted = FormatCoord(xString);
+                yStringFormatted = FormatCoord(yString);
+                viewX.setText(xStringFormatted);
+                viewY.setText(yStringFormatted);
 
 
 
@@ -421,7 +421,7 @@ public class MainActivity6 extends AppCompatActivity {
         timeoutHandler.postDelayed(() -> {
             Log.d("GPS", "Timeout reached, stopping GPS");
             ready[0] = true;
-            if(location[0] == null)DisplayError("За указанное время не удалось определить местоположение!", context, MainActivity6.this);
+            if(location[0] == null)DisplayError("За указанное время не удалось определить местоположение!", context, MainActivity5.this);
             fusedClient.removeLocationUpdates(locationCallback);
         }, (long)timeoutVal * 1000);
 

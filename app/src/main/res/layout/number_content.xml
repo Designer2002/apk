@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_gravity="center"
-        android:paddingHorizontal="60dp"
+        android:paddingHorizontal="30dp"
         android:paddingVertical="15dp"
         android:background="@drawable/number_bg"
         android:elevation="4dp">

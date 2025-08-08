@@ -11,12 +11,14 @@ public class Formula {
         return Integer.parseInt(x) > 0;
     }
     private static Boolean areTwoFirstDigitsOfYAnEvenNumber(String y){
-        return Integer.parseInt(y.substring(0, 2)) % 2 == 0;
+        if(y.length()==8) return Integer.parseInt(y.substring(0, 2)) % 2 == 0;
+        else return Integer.parseInt(y.substring(0, 1)) % 2 == 0;
     }
     private static String processNumber(String number){
         number = number.replace("-", "");
         //отбросить первые 2 цифры числа  и работать с оставшимися 5
-        String last_five_digits = number.substring(2);
+        int i = number.length() == 8 ? 3:2;
+        String last_five_digits = number.substring(i);
         String last_two = last_five_digits.substring(3);
         Integer rounded_last_two_as_number = Math.round(Integer.parseInt(last_two) / 10.0f);
         //возращаемое значение - первые ТРИ цифры оригинальные + ОКРУГЛЕННАЯ цифра минус НОЛЬ (оставшийся от откругления)

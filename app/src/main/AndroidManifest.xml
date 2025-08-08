@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhakiDark">
         <activity
+            android:name=".MainActivity5"
+            android:exported="false" />
+        <activity
             android:name=".TimeoutActivity"
             android:exported="false" />
         <activity

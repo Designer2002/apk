@@ -3,6 +3,7 @@ package com.example.myapplication;
 import static com.example.myapplication.SeekerInterop.createSegment;
 import static com.example.myapplication.StartActivity.selected;
 import static com.example.myapplication.Utils.CheckFormat;
+import static com.example.myapplication.Utils.CheckFormatY;
 import static com.example.myapplication.Utils.DisplayError;
 import static com.example.myapplication.Utils.FormatCoord;
 import static com.example.myapplication.Utils.ShowSpinnerDialog;
@@ -240,11 +241,11 @@ public class MainActivity7_62 extends AppCompatActivity {
                 }
                 resultTMP = resStr.replace("[", "").replace("]", "").split(",");
                 variable = Utils.fillVrlms(resultTMP[1]);
-                viewA.setText(variable);
+                viewA.setText(resultTMP[1].split("\\.")[0]+"°");
 
                 //п(р)итон опять!
                 module = py.getModule("angle");
-                pyresult = module.callAttr("uglomer", variable);
+                pyresult = module.callAttr("uglomer", Float.valueOf(resultTMP[1].trim()));
                 resStr = pyresult.toString();
                 viewA2.setText(resStr);
 
@@ -260,15 +261,12 @@ public class MainActivity7_62 extends AppCompatActivity {
                 xStringFormatted = viewX.getText().toString().trim();
                 yStringFormatted = viewY.getText().toString().trim();
 
-                if (!CheckFormat(yStringFormatted) || !CheckFormat(xStringFormatted)) {
-                    DisplayError("Вы ввели не семизначные числа в поле ввода \"Позиция\", введите их корректно", context, this);
+                if (!CheckFormatY(yStringFormatted) || !CheckFormat(xStringFormatted)) {
+                    DisplayError("Вы ввели числа в некоректном формате в поле ввода \"Позиция\", введите их правильно", context, this);
                     return;
                 }
                 //2.заполняем таблицу
                 //но сначала надо убедиться что не ввели чушь
-                if (variable == null || variable.isEmpty())
-                    variable = String.valueOf(viewA.getText());
-                variable = viewA.getText().toString();
 
 
                 if (xStringFormatted == null || yStringFormatted == null) {

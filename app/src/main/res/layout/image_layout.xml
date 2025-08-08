@@ -14,28 +14,29 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_gravity="top"
-        android:background="@color/backgroundKhaki"
-        android:paddingHorizontal="16dp"
         android:layout_marginTop="50dp"
+        android:padding="25dp"
         android:visibility="visible"
         android:elevation="4dp">
 
        <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:layout_gravity="start"
+           android:layout_weight="1"
            android:orientation="vertical">
            <TextView
                android:text="@string/back_text"
                android:textColor="@color/khaki_text_primary"
-               android:gravity="center"
-
-               android:layout_width="100dp" android:layout_height="28dp"/>
+               android:gravity="start"
+android:layout_marginStart="5dp"
+               android:layout_width="wrap_content" android:layout_height="wrap_content"/>
            <ImageButton
                android:layout_width="54dp"
                android:layout_height="54dp"
                android:id="@+id/back"
                android:padding="15dp"
-               android:layout_gravity="center"
+               android:layout_gravity="start"
                android:scaleType="centerInside"
                android:background="@drawable/gps_button"
                android:src="@drawable/back"/>

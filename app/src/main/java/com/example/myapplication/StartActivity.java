@@ -99,12 +99,18 @@ public class StartActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     return;
-                } else {
-                    Intent intent = new Intent(StartActivity.this, MainActivity6.class);
+                } else if (selected == 4) {
+                    Intent intent = new Intent(StartActivity.this, MainActivity5.class);
                     startActivity(intent);
                     finish();
                     return;
                 }
+            else if (selected == 2) {
+                Intent intent = new Intent(StartActivity.this, MainActivity6.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
             }
 
         });

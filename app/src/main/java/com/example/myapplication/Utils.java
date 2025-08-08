@@ -65,6 +65,9 @@ public class Utils {
             return coord.length()==7;
         }
     }
+    public static boolean CheckFormatY(String y){
+        return y.length() == 8 || y.length() == 7;
+    }
     public static void RememberIn(Activity a, Context c, TableLayout table, View view, int idX, int idY, int idVar){
         Gson gson = new Gson();
         String[] res = new String[18];
